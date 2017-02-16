@@ -1,0 +1,9 @@
+# Mac
+.DS_Store
+
+# Joomla
+/administrator/cache/*
+/cache/*
+/tmp/*
+
+!index.html

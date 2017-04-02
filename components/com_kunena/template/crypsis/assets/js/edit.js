@@ -2,8 +2,8 @@
  * Kunena Component
  * @package Kunena.Template.Crypsis
  *
- * @copyright (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link https://www.kunena.org
  **/
 
@@ -71,7 +71,7 @@ jQuery(document).ready(function ($) {
 			$(item).atwho({
 				at              : ":",
 				displayTpl      : "<li data-value='${key}'>${name} <img src='${url}' height='20' width='20' /></li>",
-				insertTpl       : ':${name}:',
+				insertTpl       : '${name}',
 				callbacks: {
 					remoteFilter: function (query, callback) {
 						if (query.length > 0) {
@@ -112,6 +112,8 @@ jQuery(document).ready(function ($) {
 	$('#postcatid').change(function () {
 		var catid = $('select#postcatid option').filter(':selected').val();
 		var kurl_topicons_request = $('#kurl_topicons_request').val();
+
+		$("#subject").attr('required', 'required');
 
 		if ($('#kanynomous-check').length > 0) {
 			if (arrayanynomousbox[catid] !== undefined) {

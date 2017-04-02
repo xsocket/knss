@@ -4,8 +4,8 @@
  * @package     Kunena.Template.Crypsis
  * @subpackage  Layout.Message
  *
- * @copyright   (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright   (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link        https://www.kunena.org
  **/
 defined('_JEXEC') or die;
@@ -56,7 +56,7 @@ if ($me->canDoCaptcha() )
 }
 ?>
 
-<div class="kreply col-md-12 well" id="kreply<?php echo $message->displayField('id'); ?>_form" style="display: inline-block">
+<div class="kreply col-md-12 well" id="kreply<?php echo $message->displayField('id'); ?>_form" style="display: inline-block;">
 			<form action="<?php echo KunenaRoute::_('index.php?option=com_kunena&view=topic'); ?>" method="post"
 				enctype="multipart/form-data" name="postform" id="postform" class="form-horizontal">
 				<input type="hidden" name="task" value="post" />
@@ -96,14 +96,14 @@ if ($me->canDoCaptcha() )
 						</label>
 						<input type="text" id="subject" name="subject" class="form-control"
 								maxlength="<?php echo $template->params->get('SubjectLengthMessage'); ?>"
-								<?php if (!$config->allow_change_subject): ?>disabled<?php endif; ?>
+								<?php if (!$config->allow_change_subject && !$me->isModerator()): ?>disabled<?php endif; ?>
 								value="<?php echo $message->displayField('subject'); ?>" />
 					</div>
 					<div class="form-group">
 						<label class="col-md-12 control-label">
 							<?php echo JText::_('COM_KUNENA_MESSAGE'); ?>:
 						</label>
-						<textarea class="qreply form-control" id="kbbcode-message" name="message" rows="6" cols="60"></textarea>
+						<textarea class="qreply form-control" id="kbbcode-message" name="message" rows="6" cols="60" placeholder="<?php echo JText::_('COM_KUNENA_ENTER_MESSAGE') ?>"></textarea>
 					</div>
 
 					<?php if ($topic->isAuthorised('subscribe')) : ?>

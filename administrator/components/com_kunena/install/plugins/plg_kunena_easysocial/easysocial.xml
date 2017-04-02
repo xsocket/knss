@@ -2,18 +2,19 @@
 <!DOCTYPE extension>
 <extension version="2.5" type="plugin" group="kunena" method="upgrade">
 	<name>plg_kunena_easysocial</name>
-	<version>5.0.1</version>
-	<creationDate>2016-08-20</creationDate>
+	<version>5.0.7</version>
+	<creationDate>2017-03-31</creationDate>
 	<author>StackIdeas</author>
 	<authorEmail>support@stackideas.com</authorEmail>
-	<authorUrl>http://stackideas.com</authorUrl>
-	<copyright>http://stackideas.com</copyright>
+	<authorUrl>https://stackideas.com</authorUrl>
+	<copyright>https://stackideas.com</copyright>
 	<license>GNU/GPLv3 or later</license>
 	<description>PLG_KUNENA_EASYSOCIAL_DESCRIPTION</description>
 	<files>
 		<folder>alerts</folder>
 		<folder>badges</folder>
 		<folder>points</folder>
+		<folder>language</folder>
 		<filename>activity.php</filename>
 		<filename>avatar.php</filename>
 		<filename plugin="easysocial">easysocial.php</filename>
@@ -22,7 +23,6 @@
 		<filename>login.php</filename>
 		<filename>private.php</filename>
 		<filename>profile.php</filename>
-		<folder>language</folder>
 	</files>
 	<config>
 		<fields name="params">

@@ -4,8 +4,8 @@
  * @package     Kunena.Template.Crypsis
  * @subpackage  Layout.Message
  *
- * @copyright   (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright   (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link        https://www.kunena.org
  **/
 defined('_JEXEC') or die;
@@ -74,12 +74,12 @@ $quick = $template->params->get('quick');
 ?>
 
 <?php if ($quick == 1) : ?>
-<div class="modal fade" id="kreply<?php echo $message->displayField('id'); ?>_form" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display:none;">
+<div class="modal fade" id="kreply<?php echo $message->displayField('id'); ?>_form" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" style="display:none;" data-backdrop="false">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 
 <?php elseif ($quick == 0) : ?>
-<div class="col-md-12 qreplyform" id="kreply<?php echo $message->displayField('id'); ?>_form"  style="position: relative; top: 10px; left: -20px; right: -10px; width:100%; z-index: 1;display: none">
+<div class="col-md-12 qreplyform" id="kreply<?php echo $message->displayField('id'); ?>_form"  style="position: relative; top: 10px; left: -20px; right: -10px; width:100%; z-index: 1;display: none;">
 	<div class="panel panel-default">
 		<div class="panel-body">
 <?php endif;?>
@@ -123,14 +123,14 @@ $quick = $template->params->get('quick');
 						</label>
 						<input type="text" id="subject" name="subject" class="form-control"
 								maxlength="<?php echo $template->params->get('SubjectLengthMessage'); ?>"
-								<?php if (!$config->allow_change_subject): ?>disabled<?php endif; ?>
+								<?php if (!$config->allow_change_subject && !$me->isModerator()): ?>disabled<?php endif; ?>
 								value="<?php echo $message->displayField('subject'); ?>" />
 					</div>
 					<div class="form-group">
 						<label class="col-md-12 control-label" style="padding:0;">
 							<?php echo JText::_('COM_KUNENA_MESSAGE'); ?>:
 						</label>
-						<textarea class="qreply form-control" id="kbbcode-message" name="message" rows="6" cols="60"></textarea>
+						<textarea class="qreply form-control" id="kbbcode-message" name="message" rows="6" cols="60" placeholder="<?php echo JText::_('COM_KUNENA_ENTER_MESSAGE') ?>"></textarea>
 					</div>
 
 					<?php if ($topic->isAuthorised('subscribe')) : ?>

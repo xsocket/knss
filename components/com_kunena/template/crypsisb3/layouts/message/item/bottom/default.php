@@ -4,8 +4,8 @@
  * @package     Kunena.Template.Crypsis
  * @subpackage  Layout.Message
  *
- * @copyright   (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright   (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link        https://www.kunena.org
  **/
 defined('_JEXEC') or die;
@@ -16,34 +16,40 @@ $message = $this->message;
 $isReply = $this->message->id != $this->topic->first_post_id;
 $signature = $this->profile->getSignature();
 $attachments = $message->getAttachments();
+$attachs = $message->getNbAttachments();
 $avatarname = $this->profile->getname();
 $topicStarter = $this->topic->first_post_userid == $this->message->userid;
 $config = KunenaConfig::getInstance();
-if ($config->ordering_system == 'mesid') {
+$subjectlengthmessage = $this->ktemplate->params->get('SubjectLengthMessage', 20);
+
+if ($config->ordering_system == 'mesid')
+{
 	$this->numLink = $this->location;
-} else {
+}
+else
+{
 	$this->numLink = $message->replynum;
 }
-
-$subjectlengthmessage = $this->ktemplate->params->get('SubjectLengthMessage', 20);
 ?>
 
-<small class="text-muted pull-right hidden-xs">
-	<?php if ($this->ipLink) : ?>
+<small class="text-muted pull-right">
+	<?php if ($this->ipLink && !empty($this->message->ip)) : ?>
 		<?php echo KunenaIcons::ip();?>
 		<span class="ip"> <?php echo $this->ipLink; ?> </span>
 	<?php endif;?>
-	<span class="icon glyphicon glyphicon-clock"></span>
+	<?php echo KunenaIcons::clock();?>
 	<?php echo $message->getTime()->toSpan('config_post_dateformat', 'config_post_dateformat_hover'); ?>
+	<?php if ($message->modified_time) :?> - <?php echo KunenaIcons::edit() . ' ' . $message->getModifiedTime()->toSpan('config_post_dateformat', 'config_post_dateformat_hover'); endif;?>
 	<a href="#<?php echo $this->message->id; ?>" id="<?php echo $this->message->id; ?>" rel="canonical">#<?php echo $this->numLink; ?></a>
+	<span class="visible-xs"><?php echo JText::_('COM_KUNENA_BY') . ' ' . $message->getAuthor()->getLink();?></span>
 </small>
 <div class="clear-fix"></div>
 <div class="horizontal-message">
 	<div class="horizontal-message-bottom badger-info <?php if ($message->getAuthor()->isModerator()) : ?> badger-moderator <?php endif;?>"
-		data-badger="<?php echo (!$isReply) ? $this->escape($avatarname) . ' ' . JText::_('COM_KUNENA_MESSAGE_CREATED') : $this->escape($avatarname) . ' ' . JText::_('COM_KUNENA_MESSAGE_REPLIED') . ' ' . KunenaHtmlParser::parseText($message->displayField('subject'), $subjectlengthmessage); ?>">
+		data-badger="<?php echo (!$isReply) ? $this->escape($avatarname) . ' ' . JText::_('COM_KUNENA_MESSAGE_CREATED') . ' ' . KunenaForumMessage::getInstance()->getsubstr($this->escape($message->subject), 0, $subjectlengthmessage) : $this->escape($avatarname) . ' ' . JText::_('COM_KUNENA_MESSAGE_REPLIED') . ' ' . KunenaForumMessage::getInstance()->getsubstr($this->escape($message->subject), 0, $subjectlengthmessage); ?>">
 		<div class="kmessage">
 			<div class="horizontal-message-text">
-				<p class="kmsg"> <?php echo $message->displayField('message'); ?> </p>
+				<div class="kmsg"> <?php echo $message->displayField('message'); ?> </div>
 			</div>
 			<?php if ($signature) : ?>
 				<div class="ksig">
@@ -53,11 +59,15 @@ $subjectlengthmessage = $this->ktemplate->params->get('SubjectLengthMessage', 20
 			<?php endif ?>
 
 			<?php if ($this->config->reportmsg && $this->me->exists()) :
-				if ($this->me->isModerator() || $this->config->user_report || $this->me->userid !== $this->message->userid) : ?>
-					<div id="report<?php echo $this->message->id; ?>" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
-						<div class="modal-header">
-							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-							<?php echo $this->subRequest('Topic/Report')->set('id', $this->topic->id); ?>
+				if ($this->me->isModerator($this->topic->getCategory()) || $this->config->user_report || !$this->config->user_report && $this->me->userid != $this->message->userid) : ?>
+					<div id="report<?php echo $this->message->id; ?>" class="modal fade" tabindex="-1" role="dialog" data-backdrop="false">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+									<?php echo $this->subRequest('Topic/Report')->set('id', $this->topic->id); ?>
+								</div>
+							</div>
 						</div>
 					</div>
 				<?php endif; ?>

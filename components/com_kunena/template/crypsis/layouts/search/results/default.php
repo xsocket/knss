@@ -4,8 +4,8 @@
  * @package     Kunena.Template.Crypsis
  * @subpackage  Layout.Search
  *
- * @copyright   (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright   (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link        https://www.kunena.org
  **/
 defined('_JEXEC') or die;
@@ -19,7 +19,7 @@ if (empty($this->results))
 <h2>
 	<?php echo JText::_('COM_KUNENA_SEARCH_RESULTS'); ?>
 	<small>
-		(<?php echo JText::sprintf ('COM_KUNENA_FORUM_SEARCH', $this->escape($this->state->get('searchwords'))); ?>)
+		(<?php echo JText::sprintf('COM_KUNENA_FORUM_SEARCH', $this->escape($this->state->get('searchwords'))); ?>)
 	</small>
 </h2>
 
@@ -43,4 +43,4 @@ $stop = $this->pagination->limitstart + count($this->results);
 $range = $start . ' - ' . $stop;
 echo JText::sprintf('COM_KUNENA_FORUM_SEARCHRESULTS', $range, $this->pagination->total);
 ?>
-<?php echo $this->subLayout('Widget/Pagination/List')->set('pagination', $this->pagination); ?>
+<?php echo $this->subLayout('Widget/Pagination/List')->set('pagination', $this->pagination);

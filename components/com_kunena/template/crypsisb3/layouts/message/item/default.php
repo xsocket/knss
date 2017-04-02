@@ -4,8 +4,8 @@
  * @package     Kunena.Template.Crypsis
  * @subpackage  Layout.Message
  *
- * @copyright   (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright   (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link        https://www.kunena.org
  **/
 defined('_JEXEC') or die;
@@ -25,34 +25,37 @@ $str_counts = substr_count($this->topic->subject, 'solved');
 if ($config->ordering_system == 'mesid')
 {
 	$this->numLink = $this->location;
-} else {
+}
+else
+{
 	$this->numLink = $message->replynum;
 }
 
 $list = array();
-
 ?>
 
-<small class="text-muted pull-right hidden-xs">
-	<?php if ($this->ipLink) : ?>
+<small class="text-muted pull-right">
+	<?php if ($this->ipLink && !empty($this->message->ip)) : ?>
 	<?php echo KunenaIcons::ip();?>
 	<span class="ip"> <?php echo $this->ipLink; ?> </span>
 	<?php endif;?>
-	<span class="glyphicon glyphicon-time"></span>
+	<?php echo KunenaIcons::clock();?>
 	<?php echo $message->getTime()->toSpan('config_post_dateformat', 'config_post_dateformat_hover'); ?>
+	<?php if ($message->modified_time) :?> - <?php echo KunenaIcons::edit() . ' ' . $message->getModifiedTime()->toSpan('config_post_dateformat', 'config_post_dateformat_hover'); endif;?>
 	<a href="#<?php echo $this->message->id; ?>" id="<?php echo $this->message->id; ?>" rel="canonical">#<?php echo $this->numLink; ?></a>
+	<span class="visible-xs"><?php echo JText::_('COM_KUNENA_BY') . ' ' . $message->getAuthor()->getLink();?></span>
 </small>
 
 <div class="badger-left badger-info message-<?php echo $this->message->getState(); ?>"
-	 data-badger="<?php echo (!$isReply) ? $this->escape($avatarname) . ' ' . JText::_('COM_KUNENA_MESSAGE_CREATED') . ' ' . substr($message->displayField('subject'), 0, $subjectlengthmessage) : $this->escape($avatarname) . ' ' . JText::_('COM_KUNENA_MESSAGE_REPLIED') . ' ' . substr($message->displayField('subject'), 0, $subjectlengthmessage); ?>">
+	data-badger="<?php echo (!$isReply) ? $this->escape($avatarname) . ' ' . JText::_('COM_KUNENA_MESSAGE_CREATED') . ' ' . KunenaForumMessage::getInstance()->getsubstr($this->escape($message->subject), 0, $subjectlengthmessage) : $this->escape($avatarname) . ' ' . JText::_('COM_KUNENA_MESSAGE_REPLIED') . ' ' . KunenaForumMessage::getInstance()->getsubstr($this->escape($message->subject), 0, $subjectlengthmessage); ?>">
 	<div class="kmessage">
-		<p class="kmsg">
+		<div class="kmsg">
 			<?php  if (!$this->me->userid && !$isReply) :
 				echo $message->displayField('message');
 			else:
 				echo (!$this->me->userid && $this->config->teaser) ? JText::_('COM_KUNENA_TEASER_TEXT') : $this->message->displayField('message');
 			endif;?>
-		</p>
+		</div>
 	</div>
 	<?php if ($signature) : ?>
 		<div class="ksig">
@@ -61,8 +64,8 @@ $list = array();
 		</div>
 	<?php endif ?>
 	<?php if ($this->config->reportmsg && $this->me->exists()) :
-		if ($this->me->isModerator() || $this->config->user_report || $this->me->userid !== $this->message->userid) : ?>
-			<div id="report<?php echo $this->message->id; ?>" class="modal fade" tabindex="-1" role="dialog">
+		if ($this->me->isModerator($this->topic->getCategory()) || $this->config->user_report || !$this->config->user_report && $this->me->userid != $this->message->userid) : ?>
+			<div id="report<?php echo $this->message->id; ?>" class="modal fade" tabindex="-1" role="dialog" data-backdrop="false">
 				<div class="modal-dialog">
 					<div class="modal-content">
 						<div class="modal-header">
@@ -80,7 +83,7 @@ $list = array();
 		<h5> <?php echo JText::_('COM_KUNENA_ATTACHMENTS'); ?> </h5>
 		<ul class="thumbnails">
 			<?php foreach ($attachments as $attachment) : ?>
-				<li class="col-md-3 center">
+				<li class="col-md-3 text-center">
 					<div class="thumbnail">
 						<?php echo $attachment->getLayout()->render('thumbnail'); ?>
 						<?php echo $attachment->getLayout()->render('textlink'); ?>
@@ -140,7 +143,7 @@ endif; ?>
 		if (!empty($this->thankyou_delete[$userid]))
 		{
 			$list[] = $thank . ' <a title="' . JText::_('COM_KUNENA_BUTTON_THANKYOU_REMOVE_LONG') . '" href="'
-						. $this->thankyou_delete[$userid] . '"><i class="glyphicon glyphicon-remove"></i></a>';
+						. $this->thankyou_delete[$userid] . '"><?php echo KunenaIcons::cancel();?></a>';
 		}
 		else
 		{
@@ -148,7 +151,7 @@ endif; ?>
 		}
 	}
 
-	echo '<i class="glyphicon glyphicon-thumbs-up"></i>' . JText::_('COM_KUNENA_THANKYOU') . ': ' . implode(', ', $list) . ' ';
+	echo '<?php echo KunenaIcons::thumbsup();?>' . JText::_('COM_KUNENA_THANKYOU') . ': ' . implode(', ', $list) . ' ';
 	if ($this->more_thankyou) { echo JText::sprintf('COM_KUNENA_THANKYOU_MORE_USERS', $this->more_thankyou); }
 	?>
 </div>

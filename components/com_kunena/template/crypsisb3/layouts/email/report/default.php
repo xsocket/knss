@@ -4,19 +4,22 @@
  * @package     Kunena.Template.Crypsis
  * @subpackage  Layout.Email
  *
- * @copyright   (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright   (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link        https://www.kunena.org
  **/
 defined('_JEXEC') or die;
 
-// Report moderator email (HTML)
-$this->mail->isHtml(true);
-
+$config  = KunenaConfig::getInstance();
 $user = $this->message->getAuthor();
-?>
+$this->messageLink = JUri::getInstance()->toString(array('scheme', 'host', 'port')) . $this->message->getUrl(null, false);
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+// Report moderator email (HTML)
+if (!$config->plain_email) :
+$this->mail->isHTML(true);
+$this->mail->Encoding = 'base64';
+?>
+<html xmlns="https://www.w3.org/1999/xhtml">
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0;">
@@ -89,7 +92,7 @@ $user = $this->message->getAuthor();
 
 		</style>
 
-		<title><?php echo $msg1 . " " . $config->board_title; ?></title>
+		<title><?php echo JText::_('COM_KUNENA_REPORT_MSG') . " " . $config->board_title; ?></title>
 
 	</head>
 
@@ -98,7 +101,6 @@ $user = $this->message->getAuthor();
 	color: #000000;"
 		bgcolor="#F0F0F0"
 		text="#000000">
-
 
 	<table border="0" cellpadding="0" cellspacing="0" align="center"
 		style="border-collapse: collapse; border-spacing: 0; padding: 0; width: 100%; background-color: #f0f0f0;" class="wrapper">
@@ -132,10 +134,11 @@ $user = $this->message->getAuthor();
 						</td>
 					</tr>
 
+					<?php if (!empty($config->emailheader)) :?>
 					<tr>
 						<td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; padding: 20px 0 0;" class="hero"><a target="_blank" style="text-decoration: none;"
 								href="#"><img border="0" vspace="0" hspace="0"
-									src="<?php echo JUri::base() . '/media/kunena/email/hero-wide.png';?>"
+									src="<?php echo JUri::base() . KunenaConfig::getInstance()->emailheader;?>"
 									alt="Please enable images to view this content" title="Forum"
 									width="560" style="
 			width: 100%;
@@ -143,6 +146,7 @@ $user = $this->message->getAuthor();
 			color: #000000; font-size: 13px; margin: 0; padding: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic; border: none; display: block;" /></a>
 						</td>
 					</tr>
+					<?php endif; ?>
 
 					<tr>
 						<td align="center" valign="top" style="border-collapse: collapse; border-spacing: 0; margin: 0; width: 87.5%; font-size: 17px;
@@ -200,10 +204,10 @@ $user = $this->message->getAuthor();
 
 	</body>
 </html>
-
+<?php else : ?>
 
 <?php
-
+$this->mail->isHTML(false);
 $alt = <<<EOS
 {$this->text('COM_KUNENA_REPORT_RSENDER')} {$this->me->username} ({$this->me->name})
 {$this->text('COM_KUNENA_REPORT_RREASON')} {$this->title}
@@ -219,4 +223,5 @@ $alt = <<<EOS
 
 {$this->text('COM_KUNENA_REPORT_POST_LINK')} {$this->messageLink}
 EOS;
-$this->mail->AltBody = $alt;
+echo $alt;
+endif ;?>

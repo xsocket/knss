@@ -4,8 +4,8 @@
  * @package     Kunena.Template.Crypsis
  * @subpackage  Layout.Search
  *
- * @copyright   (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright   (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link        https://www.kunena.org
  **/
 defined('_JEXEC') or die;
@@ -18,24 +18,31 @@ JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
 JHtml::_('dropdown.init');
 
-$this->addScript('js/search.js');
+// Load caret.js always before atwho.js script and use it for autocomplete, emojiis...
+$this->addScript('assets/js/jquery.caret.js');
+$this->addScript('assets/js/jquery.atwho.js');
+$this->addStyleSheet('assets/css/jquery.atwho.css');
+
+$this->addStyleSheet('assets/css/bootstrap.datepicker.css');
+$this->addScript('assets/js/bootstrap.datepicker.js');
+$this->addScript('assets/js/search.js');
 ?>
 
 <form action="<?php echo KunenaRoute::_('index.php?option=com_kunena&view=search'); ?>" method="post">
 	<input type="hidden" name="task" value="results" />
-	<?php if ($this->me->exists()): ?>
+	<?php if ($this->me->exists()) : ?>
 		<input type="hidden" id="kurl_users" name="kurl_users" value="<?php echo KunenaRoute::_('index.php?option=com_kunena&view=user&layout=listmention&format=raw') ?>" />
 	<?php endif; ?>
-	<?php echo JHtml::_( 'form.token' ); ?>
+	<?php echo JHtml::_('form.token'); ?>
 
 	<div class="btn-toolbar pull-right">
 		<div class="btn-group">
 			<div class="btn btn-small" data-toggle="collapse" data-target="#search"></div>
 		</div>
 	</div>
-	<h2>
+	<h1>
 		<?php echo JText::_('COM_KUNENA_SEARCH_ADVSEARCH'); ?>
-	</h2>
+	</h1>
 
 	<div class="collapse in" id="search">
 	<div class="well">
@@ -66,7 +73,7 @@ $this->addScript('js/search.js');
 					<label>
 						<?php echo JText::_('COM_KUNENA_SEARCH_EXACT'); ?>:
 						<input type="checkbox" name="exactname" value="1"
-							<?php if ($this->state->get('query.exactname')) echo $this->checked; ?> />
+							<?php if ($this->state->get('query.exactname')) { echo ' checked="checked" '; } ?> />
 					</label>
 				</fieldset>
 				<?php endif; ?>
@@ -74,9 +81,9 @@ $this->addScript('js/search.js');
 		</div>
 
 		<div class="btn btn-small pull-right" data-toggle="collapse" data-target="#search-options"></div>
-		<h3>
+		<h2>
 			<?php echo JText::_('COM_KUNENA_SEARCH_OPTIONS'); ?>
-		</h3>
+		</h2>
 
 		<div class="collapse in" id="search-options">
 			<div class="well">
@@ -95,6 +102,18 @@ $this->addScript('js/search.js');
 						</legend>
 						<?php $this->displaySortByList('sort'); ?>
 						<?php $this->displayOrderList('order'); ?>
+					</fieldset>
+
+					<fieldset class="span6">
+						<legend>
+							<?php echo JText::_('COM_KUNENA_SEARCH_AT_A_SPECIFIC_DATE'); ?>
+						</legend>
+						<div id="searchatdate">
+							<div class="input-append date">
+								<input type="text" name="searchatdate" data-date-format="mm/dd/yyyy" value="">
+								<span class="input-group-addon"><?php echo KunenaIcons::calendar();?></span>
+							</div>
+						</div>
 					</fieldset>
 				</div>
 
@@ -116,17 +135,17 @@ $this->addScript('js/search.js');
 							</legend>
 							<label class="radio">
 								<input type="radio" name="show" value="0"
-									<?php if ($this->state->get('query.show') == 0) echo 'checked="checked"'; ?> />
+									<?php if ($this->state->get('query.show') == 0) { echo 'checked="checked"'; } ?> />
 								<?php echo JText::_('COM_KUNENA_SEARCH_SHOW_NORMAL'); ?>
 							</label>
 							<label class="radio">
 								<input type="radio" name="show" value="1"
-									<?php if ($this->state->get('query.show') == 1) echo 'checked="checked"'; ?> />
+									<?php if ($this->state->get('query.show') == 1) { echo 'checked="checked"'; } ?> />
 								<?php echo JText::_('COM_KUNENA_SEARCH_SHOW_UNAPPROVED'); ?>
 							</label>
 							<label class="radio">
 								<input type="radio" name="show" value="2"
-									<?php if ($this->state->get('query.show') == 2) echo 'checked="checked"'; ?> />
+									<?php if ($this->state->get('query.show') == 2) { echo 'checked="checked"'; } ?> />
 								<?php echo JText::_('COM_KUNENA_SEARCH_SHOW_TRASHED'); ?>
 							</label>
 						</fieldset>
@@ -141,7 +160,7 @@ $this->addScript('js/search.js');
 						<?php $this->displayCategoryList('categorylist', 'size="10" multiple="multiple"'); ?>
 						<label>
 							<input type="checkbox" name="childforums" value="1"
-								<?php if ($this->state->get('query.childforums')) echo 'checked="checked"'; ?> />
+								<?php if ($this->state->get('query.childforums')) { echo 'checked="checked"'; } ?> />
 							<?php echo JText::_('COM_KUNENA_SEARCH_SEARCHIN_CHILDREN'); ?>
 						</label>
 					</fieldset>
@@ -151,10 +170,10 @@ $this->addScript('js/search.js');
 
 		<div class="center">
 			<button type="submit" class="btn btn-primary">
-				<i class="icon-search icon-white"></i><?php echo(' ' . JText::_('COM_KUNENA_SEARCH_SEND') . ' '); ?>
+				<?php echo KunenaIcons::search();?><?php echo(' ' . JText::_('COM_KUNENA_SEARCH_SEND') . ' '); ?>
 			</button>
-			<button type="reset" class="btn" onclick="javascript:window.history.back();">
-				<i class="icon-cancel"></i><?php echo(' ' . JText::_('COM_KUNENA_CANCEL') . ' '); ?>
+			<button type="reset" class="btn" onclick="window.history.back();">
+				<?php echo KunenaIcons::cancel();?><?php echo(' ' . JText::_('COM_KUNENA_CANCEL') . ' '); ?>
 			</button>
 		</div>
 	</div>

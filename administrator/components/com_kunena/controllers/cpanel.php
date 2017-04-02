@@ -2,30 +2,52 @@
 /**
  * Kunena Component
  *
- * @package       Kunena.Administrator
- * @subpackage    Controllers
+ * @package     Kunena.Administrator
+ * @subpackage  Controllers
  *
- * @copyright (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license       http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * @link          https://www.kunena.org
+ * @copyright   (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @link        https://www.kunena.org
  **/
-defined('_JEXEC') or die ();
+defined('_JEXEC') or die();
 
 /**
  * Kunena Cpanel Controller
  *
- * @since 2.0
+ * @since  2.0
  */
 class KunenaAdminControllerCpanel extends KunenaController
 {
+	/**
+	 * @var null|string
+	 *
+	 * @since    2.0.0-BETA2
+	 */
 	protected $baseurl = null;
 
+	/**
+	 * Construct
+	 *
+	 * @param   array  $config  construct
+	 *
+	 * @since    2.0.0-BETA2
+	 */
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
 		$this->baseurl = 'index.php?option=com_kunena';
 	}
 
+	/**
+	 * Display
+	 *
+	 * @param   bool  $cachable   cachable
+	 * @param   bool  $urlparams  urlparams
+	 *
+	 * @return JControllerLegacy|void
+	 *
+	 * @since    2.0.0-BETA2
+	 */
 	public function display($cachable = false, $urlparams = false)
 	{
 		$db = JFactory::getDbo();
@@ -39,7 +61,7 @@ class KunenaAdminControllerCpanel extends KunenaController
 			$query = $db->getQuery(true)
 				->update($db->quoteName('#__update_sites'))
 				->set($db->quoteName('enabled') . '=1')
-				->where($db->quoteName('location') . ' LIKE ' . $db->quote('http://update.kunena.org/%'));
+				->where($db->quoteName('location') . ' LIKE ' . $db->quote('https://update.kunena.org/%'));
 			$db->setQuery($query);
 			$db->execute();
 
@@ -48,6 +70,7 @@ class KunenaAdminControllerCpanel extends KunenaController
 
 		parent::display($cachable, $urlparams);
 	}
+
 	/**
 	 * On get icons
 	 *
@@ -67,10 +90,10 @@ class KunenaAdminControllerCpanel extends KunenaController
 			$db         = JFactory::getDbo();
 
 			$query = $db->getQuery(true)
-				->select('*')
-				->from($db->qn('#__updates'))
-				->where($db->qn('extension_id') . ' > 0')
-				->where($db->qn('detailsurl') . ' LIKE ' . $db->q($updateSite));
+					->select('*')
+					->from($db->qn('#__updates'))
+					->where($db->qn('extension_id') . ' > 0')
+					->where($db->qn('detailsurl') . ' LIKE ' . $db->q($updateSite));
 			$db->setQuery($query);
 			$list = (array) $db->loadObjectList();
 
@@ -95,10 +118,10 @@ class KunenaAdminControllerCpanel extends KunenaController
 			else
 			{
 				$query = $db->getQuery(true)
-					->select('update_site_id')
-					->from($db->qn('#__update_sites'))
-					->where($db->qn('enabled') . ' = 0')
-					->where($db->qn('location') . ' LIKE ' . $db->q($updateSite));
+						->select('update_site_id')
+						->from($db->qn('#__update_sites'))
+						->where($db->qn('enabled') . ' = 0')
+						->where($db->qn('location') . ' LIKE ' . $db->q($updateSite));
 				$db->setQuery($query);
 				$updateInfo = !$db->loadResult();
 			}
@@ -107,24 +130,7 @@ class KunenaAdminControllerCpanel extends KunenaController
 		if (!empty($updateInfo->version) && version_compare(KunenaForum::version(), $updateInfo->version, '<'))
 		{
 			// Has updates
-			$template =  KunenaFactory::getTemplate()->isHmvc();
-
-			if (version_compare(JVERSION, '3.0', '>'))
-			{
-				if ($template)
-				{
-					JFactory::getApplication()->enqueueMessage(JText::_('This version of Kunena is no longer supported. Please upgrade to a supported version. <br/><br/> Please backup before updating.<br/> <br/><a class="btn btn-small btn-info" href="index.php?option=com_installer&view=update&filter_search=kunena"> Update Now</a>'), 'Notice');
-				}
-				elseif (KunenaFactory::getTemplate()->name = 'blue_eagle')
-				{
-					JFactory::getApplication()->enqueueMessage(JText::_('This version of Kunena is no longer supported. Please upgrade to a supported version.  <br/>This template (' . KunenaFactory::getTemplate()->name . ') is no longer supported. Please upgrade to a supported version.  <br/> Please backup before updating.<br/> <a class="btn btn-small btn-info" href="index.php?option=com_installer&view=update&filter_search=kunena"> Update Now</a>'), 'warning');
-				}
-				else
-				{
-					JFactory::getApplication()->enqueueMessage(JText::_('This version of Kunena is no longer supported. Please upgrade to a supported version. <br/> Please backup before updating.<br/> <a class="btn btn-small btn-info" href="index.php?option=com_installer&view=update&filter_search=kunena"> Update Now</a>'), 'warning');
-				}
-			}
-
+			JFactory::getApplication()->enqueueMessage(JText::_('Kunena Update Found.  <a class="btn btn-small btn-info" href="index.php?option=com_installer&view=update&filter_search=kunena"> Update Now</a><br/> Please backup before updating.'), 'Notice');
 			$icon = 'media/kunena/images/icons/icon-48-kupdate-update-white.png';
 			$link = 'index.php?option=com_installer&view=update&filter_search=kunena';
 		}

@@ -4,8 +4,8 @@
  * @package     Kunena.Template.Crypsis
  * @subpackage  Layout.Announcement
  *
- * @copyright   (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright   (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link        https://www.kunena.org
  **/
 defined('_JEXEC') or die;
@@ -21,27 +21,34 @@ $announcement = $this->announcement;
 
 	<td class="nowrap">
 		<div class="overflow">
-			<?php echo JHtml::_('kunenaforum.link', $announcement->getUri(), $announcement->displayField('title'),
-				null, 'follow'); ?>
+			<?php echo JHtml::_(
+	'kunenaforum.link', $announcement->getUri(), $announcement->displayField('title'),
+null, null, ''); ?>
 		</div>
 	</td>
 
 	<?php if ($this->checkbox) : ?>
 	<td class="center">
-		<?php if ($this->canPublish()) echo JHtml::_('kunenagrid.published', $row, $announcement->published, '', true); ?>
+		<?php if ($this->canPublish()) { echo JHtml::_('kunenagrid.published', $row, $announcement->published, '', true); } ?>
 	</td>
 	<td class="center">
-		<?php if ($this->canEdit()) echo JHtml::_('kunenagrid.task', $row, 'tick.png', JText::_('COM_KUNENA_ANN_EDIT'),
-			'edit', '', true); ?>
+		<?php if ($this->canEdit()) { echo JHtml::_(
+	'kunenagrid.task', $row, 'tick.png', JText::_('COM_KUNENA_ANN_EDIT'),
+'edit', '', true); } ?>
 	</td>
 	<td class="center">
-		<?php if ($this->canDelete()) echo JHtml::_('kunenagrid.task', $row, 'publish_x.png',
-			JText::_('COM_KUNENA_ANN_DELETE'), 'delete', '', true); ?>
-	</td>
-	<td>
-		<?php echo $announcement->getAuthor()->username; ?>
+		<?php if ($this->canDelete()) { echo JHtml::_(
+	'kunenagrid.task', $row, 'publish_x.png',
+JText::_('COM_KUNENA_ANN_DELETE'), 'delete', '', true); } ?>
 	</td>
 	<?php endif; ?>
+	<td>
+		<?php if (KunenaConfig::getInstance()->username) :?>
+			<?php echo $announcement->getAuthor()->username; ?>
+		<?php else :?>
+			<?php echo $announcement->getAuthor()->name; ?>
+		<?php endif; ?>
+	</td>
 
 	<td class="center hidden-phone">
 		<?php echo $announcement->displayField('id'); ?>

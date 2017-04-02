@@ -88,6 +88,9 @@
 	<button tag="hide" name="hide" title="COM_KUNENA_EDITOR_HIDE" alt="COM_KUNENA_EDITOR_HELPLINE_HIDE">
 		<wrap-selection />
 	</button>
+	<button tag="confidential" name="confidential" title="COM_KUNENA_EDITOR_CONFIDENTIAL" alt="COM_KUNENA_EDITOR_HELPLINE_CONFIDENTIAL">
+		<wrap-selection />
+	</button>
 
 	<separator name="embeding" />
 
@@ -117,9 +120,17 @@
 		<wrap-selection />
 	</button>
 
+	<button tag="soundcloud" name="soundcloud" title="COM_KUNENA_LIB_BBCODE_SOUNDCLOUD" alt="COM_KUNENA_LIB_BBCODE_SOUNDCLOUD_ALT">
+		<wrap-selection />
+	</button>
+
+	<button tag="instagram" name="instagram" title="COM_KUNENA_LIB_BBCODE_INSTAGRAM" alt="COM_KUNENA_LIB_BBCODE_INSTAGRAM_ALT">
+		<wrap-selection />
+	</button>
+
 	<separator name="misc" />
 
 	<button name="help" title="COM_KUNENA_EDITOR_HELP" alt="COM_KUNENA_EDITOR_HELPLINE_HELP">
-		<link url="http://docs.kunena.org/index.php/bbcode" />
+		<link url="https://docs.kunena.org/index.php/bbcode" />
 	</button>
 </bbcode-editor>

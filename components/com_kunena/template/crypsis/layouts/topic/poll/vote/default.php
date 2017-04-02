@@ -4,14 +4,14 @@
  * @package     Kunena.Template.Crypsis
  * @subpackage  Layout.Topic
  *
- * @copyright   (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright   (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link        https://www.kunena.org
  **/
 defined('_JEXEC') or die;
 
 // TODO: Hide KunenaHtmlParser::parseText()
-$this->addScript('poll.js');
+$this->addScript('assets/js/poll.js');
 ?>
 <div class="pull-right btn btn-small" data-toggle="collapse" data-target="#poll-vote">&times;</div>
 <h2>
@@ -34,7 +34,7 @@ $this->addScript('poll.js');
 					<input class="kpoll-boxvote" type="radio" name="kpollradio"
 					       id="radio_name<?php echo (int) $key; ?>"
 					       value="<?php echo (int) $poll_option->id; ?>"
-					<?php if ($this->voted && $this->voted->lastvote == $poll_option->id) echo 'checked="checked"'; ?> />
+					<?php if ($this->voted && $this->voted->lastvote == $poll_option->id) { echo 'checked="checked"'; } ?> />
 					<?php echo KunenaHtmlParser::parseText($poll_option->text); ?>
 				</label>
 			</li>
@@ -51,4 +51,4 @@ $this->addScript('poll.js');
 	</div>
 </form>
 </div>
-<?php echo $this->subLayout('Topic/Poll/Results')->set('poll', $this->poll)->set('usercount', $this->usercount)->set('me', $this->me)->set('topic', $this->topic)->set('category', $this->category)->set('show_title', false) ?>
+<?php echo $this->subLayout('Topic/Poll/Results')->set('poll', $this->poll)->set('usercount', $this->usercount)->set('me', $this->me)->set('topic', $this->topic)->set('category', $this->category)->set('show_title', false); ?>

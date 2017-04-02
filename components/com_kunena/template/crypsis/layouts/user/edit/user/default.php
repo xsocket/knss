@@ -4,8 +4,8 @@
  * @package     Kunena.Template.Crypsis
  * @subpackage  Layout.User
  *
- * @copyright   (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright   (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link        https://www.kunena.org
  **/
 defined('_JEXEC') or die;
@@ -23,7 +23,7 @@ defined('_JEXEC') or die;
 			<td>
 				<input type="text" name="username" id="username"
 				       value="<?php echo $this->escape($this->user->get('username'));?>"
-				       <?php if (!$this->changeUsername) echo 'disabled="disabled"'; ?> />
+				       <?php if (!$this->changeUsername) { echo 'disabled="disabled"'; } ?> />
 			</td>
 		</tr>
 		<tr>
@@ -88,4 +88,4 @@ defined('_JEXEC') or die;
 
 	</tbody>
 </table>
-<?php endif; ?>
+<?php endif;

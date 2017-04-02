@@ -4,8 +4,8 @@
  * @package     Kunena.Site
  * @subpackage  Controller.Widget
  *
- * @copyright   (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright   (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link        https://www.kunena.org
  **/
 defined('_JEXEC') or die;
@@ -28,7 +28,7 @@ class ComponentKunenaControllerWidgetStatisticsDisplay extends KunenaControllerD
 	/**
 	 * Prepare statistics box display.
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	protected function before()
 	{
@@ -45,8 +45,9 @@ class ComponentKunenaControllerWidgetStatisticsDisplay extends KunenaControllerD
 		$statistics->loadGeneral();
 		$this->setProperties($statistics);
 
-		$this->latestMemberLink = KunenaFactory::getUser(intval($this->lastUserId))->getLink();
+		$this->latestMemberLink = KunenaFactory::getUser(intval($this->lastUserId))->getLink(null, null, '');
 		$this->statisticsUrl = KunenaFactory::getProfile()->getStatisticsURL();
+
 		return true;
 	}
 }

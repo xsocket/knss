@@ -4,8 +4,8 @@
  * @package     Kunena.Template.Crypsis
  * @subpackage  Layout.Topic
  *
- * @copyright   (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright   (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link        https://www.kunena.org
  **/
 defined('_JEXEC') or die;
@@ -39,7 +39,7 @@ $labels = $this->ktemplate->params->get('labels');
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#tab1" data-toggle="tab"><?php echo JText::_('COM_KUNENA_TITLE_MODERATE_TAB_BASIC_INFO'); ?></a></li>
 				<li><a href="#tab2" data-toggle="tab"><?php echo JText::_('COM_KUNENA_TITLE_MODERATE_TAB_MOVE_OPTIONS'); ?></a></li>
-				<?php if (isset($this->message)) : ?>
+				<?php if (isset($this->message) && $this->message->getAuthor()->id != 0) : ?>
 					<li><a href="#tab3" data-toggle="tab"><?php echo JText::_('COM_KUNENA_TITLE_MODERATE_TAB_BAN_HISTORY'); ?></a></li>
 					<!--  <li><a href="#tab4" data-toggle="tab"><?php // echo JText::_('COM_KUNENA_TITLE_MODERATE_TAB_NEW_BAN'); ?></a></li> -->
 				<?php endif; ?>
@@ -69,7 +69,7 @@ $labels = $this->ktemplate->params->get('labels');
 							<?php elseif ($this->config->topicicons && $topicicontype == 'fa') : ?>
 								<label class="radio inline" for="radio<?php echo $icon->id; ?>"><i class="fa fa-<?php echo $icon->fa; ?> glyphicon-topic fa-2x"></i>
 							<?php else : ?>
-								<label class="radio inline" for="radio<?php echo $icon->id; ?>"><img src="<?php echo $icon->relpath; ?>" alt="" border="0" />
+								<label class="radio inline" for="radio<?php echo $icon->id; ?>"><img src="<?php echo $icon->relpath; ?>" alt="<?php echo $icon->name; ?>" border="0" />
 							<?php endif; ?>
 								</label>
 							<?php endforeach; ?>
@@ -78,20 +78,19 @@ $labels = $this->ktemplate->params->get('labels');
 						<div><strong><?php echo JText::_('COM_KUNENA_MODERATION_CHANGE_LABEL'); ?>:</strong></div>
 						<br>
 						<div class="kmoderate-topicicons">
-							<?php foreach ($this->topicIcons as $id => $icon): ?>
+							<?php foreach ($this->topicIcons as $id => $icon) : ?>
 								<input type="radio" id="radio<?php echo $icon->id ?>" name="topic_emoticon" value="<?php echo $icon->id ?>" <?php echo !empty($icon->checked) ? ' checked="checked" ' : '' ?> />
 									<?php if ($topicicontype == 'B3') : ?>
 										<label class="radio inline" for="radio<?php echo $icon->id; ?>"><span class="label label-<?php echo $icon->name; ?>"><span class="icon icon-<?php echo $icon->b3; ?>" aria-hidden="true"></span><span class="sr-only"></span><?php echo $icon->name; ?></span>
-                    <?php endif ?>
-									<?php if ($topicicontype == 'B2') : ?>
+									<?php elseif ($topicicontype == 'B2') : ?>
 										<label class="radio inline" for="radio<?php echo $icon->id; ?>"><span class="label label-<?php echo $icon->name; ?>"><span class="icon icon-<?php echo $icon->b2; ?>" aria-hidden="true"></span><span class="sr-only"></span><?php echo $icon->name; ?></span>
-									<?php elseif ( $topicicontype == 'fa') : ?>
+									<?php elseif ($topicicontype == 'fa') : ?>
 										<label class="radio inline" for="radio<?php echo $icon->id; ?>"><i class="fa fa-<?php echo $icon->fa; ?> glyphicon-topic fa-2x"></i>
 									<?php else : ?>
-										<label class="radio inline" for="radio<?php echo $icon->id; ?>"><img src="<?php echo $icon->relpath; ?>" alt="" border="0" />
+										<label class="radio inline" for="radio<?php echo $icon->id; ?>"><img src="<?php echo $icon->relpath; ?>" alt="<?php echo $icon->name; ?>" border="0" />
 									<?php endif; ?>
 										</label>
-							<?php endforeach; ?>
+								<?php endforeach; ?>
 						</div>
 						<br>
 					<?php endif; ?>

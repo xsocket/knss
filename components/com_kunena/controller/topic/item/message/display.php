@@ -4,8 +4,8 @@
  * @package     Kunena.Site
  * @subpackage  Controller.Topic
  *
- * @copyright   (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright   (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link        https://www.kunena.org
  **/
 defined('_JEXEC') or die;
@@ -57,8 +57,15 @@ class ComponentKunenaControllerTopicItemMessageDisplay extends KunenaControllerD
 		$this->profile = $this->message->getAuthor();
 		$this->ktemplate = KunenaFactory::getTemplate();
 
+		if ($this->topic->unread)
+		{
+			$doc = JFactory::getDocument();
+			$doc->setMetaData('robots', 'noindex, follow');
+		}
+
 		$this->captchaEnabled = false;
-		if ( $this->message->isAuthorised('reply') && $this->me->canDoCaptcha() )
+
+		if ($this->message->isAuthorised('reply') && $this->me->canDoCaptcha())
 		{
 			if (JPluginHelper::isEnabled('captcha'))
 			{
@@ -73,7 +80,6 @@ class ComponentKunenaControllerTopicItemMessageDisplay extends KunenaControllerD
 					JPluginHelper::importPlugin('captcha');
 					$dispatcher = JDispatcher::getInstance();
 					$result = $dispatcher->trigger('onInit', "dynamic_recaptcha_{$this->message->id}");
-
 					$this->captchaEnabled = $result[0];
 				}
 			}
@@ -130,8 +136,10 @@ class ComponentKunenaControllerTopicItemMessageDisplay extends KunenaControllerD
 			}
 		}
 
-		if ($this->config->reportmsg && $this->me->exists()) {
-			if ($this->config->user_report && $this->me->userid == $this->message->userid && !$this->me->isModerator()) {
+		if ($this->config->reportmsg && $this->me->exists())
+		{
+			if ($this->config->user_report && $this->me->userid == $this->message->userid && !$this->me->isModerator())
+			{
 				$this->reportMessageLink = JHTML::_('kunenaforum.link',
 					'index.php?option=com_kunena&view=topic&layout=report&catid='
 					. intval($this->category->id) . '&id=' . intval($this->message->thread)
@@ -148,8 +156,8 @@ class ComponentKunenaControllerTopicItemMessageDisplay extends KunenaControllerD
 		{
 			if (!empty($this->message->ip))
 			{
-				$this->ipLink = '<a href="http://whois.domaintools.com/' . $this->message->ip
-					. '" target="_blank"> IP: ' . $this->message->ip . '</a>';
+				$this->ipLink = '<a href="https://whois.domaintools.com/' . $this->message->ip
+					. '" target="_blank" rel="nofollow noopener noreferrer"> IP: ' . $this->message->ip . '</a>';
 			}
 			else
 			{

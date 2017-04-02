@@ -4,8 +4,8 @@
  * @package     Kunena.Template.Crypsis
  * @subpackage  Layout.Announcement
  *
- * @copyright   (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright   (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link        https://www.kunena.org
  **/
 defined('_JEXEC') or die;
@@ -41,10 +41,15 @@ null, 'follow'); ?>
 	'kunenagrid.task', $row, 'publish_x.png',
 JText::_('COM_KUNENA_ANN_DELETE'), 'delete', '', true); } ?>
 	</td>
-	<td>
-		<?php echo $announcement->getAuthor()->username; ?>
-	</td>
 	<?php endif; ?>
+
+	<td>
+		<?php if (KunenaConfig::getInstance()->username) :?>
+			<?php echo $announcement->getAuthor()->username; ?>
+		<?php else :?>
+			<?php echo $announcement->getAuthor()->name; ?>
+		<?php endif; ?>
+	</td>
 
 	<td class="center hidden-xs">
 		<?php echo $announcement->displayField('id'); ?>

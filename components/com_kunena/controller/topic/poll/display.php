@@ -4,8 +4,8 @@
  * @package     Kunena.Site
  * @subpackage  Controller.Topic
  *
- * @copyright   (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright   (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link        https://www.kunena.org
  **/
 defined('_JEXEC') or die;
@@ -114,11 +114,11 @@ class ComponentKunenaControllerTopicPollDisplay extends KunenaControllerDisplay
 	protected function prepareDocument()
 	{
 		$app       = JFactory::getApplication();
-		$menu_item = $app->getMenu()->getActive(); // get the active item
+		$menu_item = $app->getMenu()->getActive();
 
 		if ($menu_item)
 		{
-			$params             = $menu_item->params; // get the params
+			$params             = $menu_item->params;
 			$params_title       = $params->get('page_title');
 			$params_keywords    = $params->get('menu-meta_keywords');
 			$params_description = $params->get('menu-meta_description');

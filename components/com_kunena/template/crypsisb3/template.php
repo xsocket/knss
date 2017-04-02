@@ -5,8 +5,8 @@
  * @package     Kunena.Template.Crypsis
  * @subpackage  Template
  *
- * @copyright   (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright   (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link        https://www.kunena.org
  **/
 defined('_JEXEC') or die;
@@ -97,7 +97,15 @@ class KunenaTemplateCrypsisb3 extends KunenaTemplate
 		$this->compileLess('assets/less/crypsisb3.less', 'kunena.css');
 		$this->addStyleSheet('kunena.css');
 
-		$filenameless = JPATH_SITE . '/components/com_kunena/template/crypsis/assets/less/custom.less';
+		$this->ktemplate = KunenaFactory::getTemplate();
+		$storage = $this->ktemplate->params->get('storage');
+
+		if ($storage)
+		{
+			$this->addScript('assets/js/localstorage.js');
+		}
+
+		$filenameless = JPATH_SITE . '/components/com_kunena/template/crypsisb3/assets/less/custom.less';
 
 		if (file_exists($filenameless) && 0 != filesize($filenameless))
 		{
@@ -111,13 +119,12 @@ class KunenaTemplateCrypsisb3 extends KunenaTemplate
 			$this->addStyleSheet('assets/css/custom.css');
 		}
 
-		$this->ktemplate = KunenaFactory::getTemplate();
 		$fontawesome = $this->ktemplate->params->get('fontawesome');
 		$doc = JFactory::getDocument();
 
 		if ($fontawesome)
 		{
-			$doc->addStyleSheet("//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css");
+			$doc->addStyleSheet("https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
 		}
 
 		$icons = $this->ktemplate->params->get('icons');
@@ -143,7 +150,7 @@ EOF;
 		$iconcolornew = $this->ktemplate->params->get('IconColorNew');
 		if ($iconcolornew) {
 			$styles .= <<<EOF
-		.layout#kunena [class*="category"] .icon-knewchar { color: {$iconcolornew} !important; }
+		.layout#kunena [class*="category"] .knewchar { color: {$iconcolornew} !important; }
 		.layout#kunena sup.knewchar { color: {$iconcolornew} !important; }
 		.layout#kunena .topic-item-unread { border-left-color: {$iconcolornew} !important;}
 		.layout#kunena .topic-item-unread .glyphicon { color: {$iconcolornew} !important;}

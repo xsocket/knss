@@ -4,7 +4,7 @@
  * @package     Kunena.Template.Crypsis
  * @subpackage  Layout.Widget
  *
- * @copyright   (C) 2008 - 2016 Kunena Team. All rights reserved.
+ * @copyright   (C) 2008 - 2017 Kunena Team. All rights reserved.
  * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link        https://www.kunena.org
  **/
@@ -28,7 +28,7 @@ foreach ($this->list as $i => $item)
 	{
 		$aliasToId = $item->params->get('aliasoptions');
 
-		if (count($this->path) > 0 && $aliasToId == $this->path[count($this->path)-1])
+		if (count($this->path) > 0 && $aliasToId == $this->path[count($this->path) - 1])
 		{
 			$class .= ' active';
 		}
@@ -45,7 +45,7 @@ foreach ($this->list as $i => $item)
 
 	echo '<li' . $id . $class . '>';
 
-	$flink = ' href="'.htmlspecialchars($item->flink, ENT_COMPAT, 'UTF-8') . '" ';
+	$flink = ' href="' . htmlspecialchars($item->flink, ENT_COMPAT, 'UTF-8') . '" ';
 	$class = $item->anchor_css ? ' class="' . $item->anchor_css . '" ' : '';
 	$title = $item->anchor_title ? ' title="' . $item->anchor_title . '" ' : '';
 

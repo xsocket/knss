@@ -2,37 +2,53 @@
 /**
  * Kunena Component
  *
- * @package       Kunena.Site
- * @subpackage    Views
+ * @package     Kunena.Site
+ * @subpackage  Views
  *
- * @copyright (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license       http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * @link          https://www.kunena.org
+ * @copyright   (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @link        https://www.kunena.org
  **/
-defined('_JEXEC') or die ();
+defined('_JEXEC') or die();
 
 /**
  * Topics View
  */
 class KunenaViewTopics extends KunenaView
 {
+	/**
+	 * @param   null $tpl
+	 *
+	 * @return JException
+	 */
 	function displayDefault($tpl = null)
 	{
 		if (!$this->config->enablerss)
 		{
-			JError::raiseError(404, JText::_('COM_KUNENA_RSS_DISABLED'));
+			return new JException(JText::_('COM_KUNENA_RSS_DISABLED'), 401);
 		}
 
 		KunenaHtmlParser::$relative = false;
-		/*
-		// TODO: caching (this is from old code)
-		$cache = JFactory::getCache( 'com_kunena_rss' );
-		if ( $this->caching ) {
-			$cache->setCaching( 1 );
-			$cache->setLifeTime( $this->caching );
+		$config = KunenaFactory::getConfig();
+		$cache = JFactory::getCache('com_kunena_rss', 'output');
+
+		if (!$config->get('cache'))
+		{
+			$cache->setCaching(0);
 		}
-		$data = $cache->call( array( 'CKunenaRSSData', 'fetch' ), $this->type, $this->incl_cat, $this->excl_cat, $this->limit, $this->timelimit );
-		*/
+		else
+		{
+			if ($config->rss_cache >= 1)
+			{
+				$cache->setCaching(1);
+				$cache->setLifeTime($config->rss_cache);
+			}
+			else
+			{
+				$cache->setCaching(0);
+			}
+		}
+
 		$this->layout = 'default';
 		$this->params = $this->state->get('params');
 		$this->topics = $this->get('Topics');
@@ -71,11 +87,16 @@ class KunenaViewTopics extends KunenaView
 		$this->displayTopicRows();
 	}
 
+	/**
+	 * @param   null $tpl
+	 *
+	 * @return JException
+	 */
 	function displayUser($tpl = null)
 	{
 		if (!$this->config->enablerss)
 		{
-			JError::raiseError(404, JText::_('COM_KUNENA_RSS_DISABLED'));
+			return new JException(JText::_('COM_KUNENA_RSS_DISABLED'), 401);
 		}
 
 		$this->layout = 'user';
@@ -109,11 +130,16 @@ class KunenaViewTopics extends KunenaView
 		$this->displayTopicRows();
 	}
 
+	/**
+	 * @param   null $tpl
+	 *
+	 * @return JException
+	 */
 	function displayPosts($tpl = null)
 	{
 		if (!$this->config->enablerss)
 		{
-			JError::raiseError(404, JText::_('COM_KUNENA_RSS_DISABLED'));
+			return new JException(JText::_('COM_KUNENA_RSS_DISABLED'), 401);
 		}
 
 		$this->layout   = 'posts';
@@ -149,6 +175,9 @@ class KunenaViewTopics extends KunenaView
 		$this->displayPostRows();
 	}
 
+	/**
+	 *
+	 */
 	function displayTopicRows()
 	{
 		$firstpost = $this->state->get('list.mode') == 'topics';
@@ -191,6 +220,9 @@ class KunenaViewTopics extends KunenaView
 		}
 	}
 
+	/**
+	 *
+	 */
 	function displayPostRows()
 	{
 		foreach ($this->messages as $message)
@@ -223,6 +255,15 @@ class KunenaViewTopics extends KunenaView
 		}
 	}
 
+	/**
+	 * @param $title
+	 * @param $url
+	 * @param $description
+	 * @param $category
+	 * @param $date
+	 * @param $userid
+	 * @param $username
+	 */
 	function createItem($title, $url, $description, $category, $date, $userid, $username)
 	{
 		if ($this->config->rss_author_in_title)
@@ -246,7 +287,7 @@ class KunenaViewTopics extends KunenaView
 		}
 
 		// Assign values to feed item
-		$item              = new JFeedItem();
+		$item              = new JFeedItem;
 		$item->title       = $title;
 		$item->link        = $url;
 		$item->description = $description;

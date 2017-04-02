@@ -4,8 +4,8 @@
  * @package     Kunena.Site
  * @subpackage  Controller.Message
  *
- * @copyright   (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright   (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link        https://www.kunena.org
  **/
 defined('_JEXEC') or die;
@@ -44,7 +44,8 @@ class ComponentKunenaControllerMessageListRecentDisplay extends ComponentKunenaC
 
 		if ($this->embedded)
 		{
-			$this->moreUri = new JUri('index.php?option=com_kunena&view=topics&layout=posts&mode=' . $this->state->get('list.mode') . '&userid=' . $this->state->get('user') . '&sel=' . $this->state->get('list.time') . '&limit=' . $this->state->get('list.limit'));
+			$this->moreUri = new JUri('index.php?option=com_kunena&view=topics&layout=posts&mode=' . $this->state->get('list.mode')
+				. '&userid=' . $this->state->get('user') . '&limit=' . $this->state->get('list.limit'));
 			$this->moreUri->setVar('Itemid', KunenaRoute::getItemID($this->moreUri));
 		}
 
@@ -115,6 +116,63 @@ class ComponentKunenaControllerMessageListRecentDisplay extends ComponentKunenaC
 
 		$this->pagination = new KunenaPagination($finder->count(), $start, $limit);
 
+		$doc = JFactory::getDocument();
+
+		if (!$start)
+		{
+			foreach ($doc->_links as $key => $value)
+			{
+				if (is_array($value))
+				{
+					if (array_key_exists('relation', $value))
+					{
+						if ($value['relation'] == 'canonical')
+						{
+							$canonicalUrl = KunenaRoute::_();
+							$doc->_links[$canonicalUrl] = $value;
+							unset($doc->_links[$key]);
+							break;
+						}
+					}
+				}
+			}
+			$doc->setMetaData('robots', 'follow, noindex');
+		}
+
+		$pagdata = $this->pagination->getData();
+
+		if ($pagdata->previous->link)
+		{
+			$pagdata->previous->link = str_replace( 'limitstart=0', '', $pagdata->previous->link);
+			$doc->addHeadLink($pagdata->previous->link, 'prev');
+		}
+
+		if ($pagdata->next->link)
+		{
+			$doc->addHeadLink($pagdata->next->link, 'next');
+		}
+
+		$page = $this->pagination->pagesCurrent;
+		if ($page > 1)
+		{
+			foreach ($doc->_links as $key => $value)
+			{
+				if (is_array($value))
+				{
+					if (array_key_exists('relation', $value))
+					{
+						if ($value['relation'] == 'canonical')
+						{
+							$canonicalUrl = KunenaRoute::_();
+							$doc->_links[$canonicalUrl] = $value;
+							unset($doc->_links[$key]);
+							break;
+						}
+					}
+				}
+			}
+		}
+
 		if ($this->moreUri)
 		{
 			$this->pagination->setUri($this->moreUri);
@@ -153,7 +211,7 @@ class ComponentKunenaControllerMessageListRecentDisplay extends ComponentKunenaC
 		{
 			case 'unapproved':
 				$this->headerText = JText::_('COM_KUNENA_VIEW_TOPICS_POSTS_MODE_UNAPPROVED');
-				$actions = array('approve', 'delete', 'permdelete');
+				$actions = array('approve', 'delete', 'move', 'permdelete');
 				break;
 			case 'deleted':
 				$this->headerText = JText::_('COM_KUNENA_VIEW_TOPICS_POSTS_MODE_DELETED');
@@ -170,9 +228,120 @@ class ComponentKunenaControllerMessageListRecentDisplay extends ComponentKunenaC
 			case 'recent':
 			default:
 				$this->headerText = JText::_('COM_KUNENA_VIEW_TOPICS_POSTS_MODE_DEFAULT');
-				$actions = array('delete', 'permdelete');
+				$actions = array('approve', 'delete', 'move', 'permdelete');
 		}
 
 		$this->actions = $this->getMessageActions($this->messages, $actions);
+	}
+
+	/**
+	 * Prepare document.
+	 *
+	 * @return void
+	 */
+	protected function prepareDocument()
+	{
+		$page = $this->pagination->pagesCurrent;
+		$total = $this->pagination->pagesTotal;
+		$user = KunenaUserHelper::get($this->state->get('user'));
+
+		$headerText = $this->headerText . ' ' . JText::_('COM_KUNENA_FROM') . ' ' . $user->getName() . ($total > 1 && $page > 1 ? " - " . JText::_('COM_KUNENA_PAGES') . " {$page}" : '');
+		$doc = JFactory::getDocument();
+		$app = JFactory::getApplication();
+		$menu_item   = $app->getMenu()->getActive();
+		$config = JFactory::getApplication('site');
+		$componentParams = $config->getParams('com_config');
+		$robots = $componentParams->get('robots');
+
+		if ($menu_item)
+		{
+			$params             = $menu_item->params;
+			$params_title       = $params->get('page_title');
+			$params_keywords    = $params->get('menu-meta_keywords');
+			$params_description = $params->get('menu-meta_description');
+			$params_robots      = $params->get('robots');
+
+			$list_mode = $this->state->get('list.mode');
+			$user_state = $this->state->get('user');
+
+			if ($list_mode == 'latest' && !empty($user_state))
+			{
+				$this->setTitle($headerText);
+			}
+			elseif (!empty($params_title))
+			{
+				$keywords = $params->get('menu-title');
+				$this->setTitle($keywords);
+			}
+			else
+			{
+				$this->title = $this->headerText . ' ' . JText::_('COM_KUNENA_ON') . ' ' . $menu_item->title;
+				$this->setTitle($this->title);
+			}
+
+			if ($list_mode == 'latest' && !empty($user_state))
+			{
+				$keywords = $this->config->board_title . ', ' . $user->getName();
+				$this->setKeywords($keywords);
+			}
+			elseif (!empty($params_keywords))
+			{
+				$keywords = $params->get('menu-meta_keywords');
+				$this->setKeywords($keywords);
+			}
+			else
+			{
+				$keywords = $this->config->board_title;
+				$this->setKeywords($keywords);
+			}
+
+			if ($list_mode == 'latest' && !empty($user_state))
+			{
+				$this->setDescription($headerText);
+			}
+			elseif (!empty($params_description))
+			{
+				$description = $params->get('menu-meta_description') . ' ' . JText::_('COM_KUNENA_ON') . ' ' . $menu_item->title . ($total > 1 && $page > 1 ? " - " . JText::_('COM_KUNENA_PAGES') . " {$page}" : '');
+				$this->setDescription($description);
+			}
+			else
+			{
+				$description = $this->headerText  . ' ' . JText::_('COM_KUNENA_ON') . ' ' . $menu_item->title . ': ' . $this->config->board_title . ($total > 1 && $page > 1 ? " - " . JText::_('COM_KUNENA_PAGES') . " {$page}" : '');
+				$this->setDescription($description);
+			}
+		}
+
+		if ($list_mode == 'latest' && !empty($user_state))
+		{
+			$doc = JFactory::getDocument();
+			$doc->setMetaData('robots', 'follow, noindex');
+		}
+		else
+		{
+			if (!empty($params_robots))
+			{
+				$robots = $params->get('robots');
+				$doc->setMetaData('robots', $robots);
+			}
+			else
+			{
+				if ($robots == '')
+				{
+					$doc->setMetaData('robots', 'index, follow');
+				}
+				elseif ($robots == 'noindex, follow')
+				{
+					$doc->setMetaData('robots', 'noindex, follow');
+				}
+				elseif ($robots == 'index, nofollow')
+				{
+					$doc->setMetaData('robots', 'index, nofollow');
+				}
+				else
+				{
+					$doc->setMetaData('robots', 'nofollow, noindex');
+				}
+			}
+		}
 	}
 }

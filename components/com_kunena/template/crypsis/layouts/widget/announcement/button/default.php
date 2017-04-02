@@ -5,8 +5,8 @@
  * @package     Kunena.Template.Crypsis
  * @subpackage  Layout.Widget
  *
- * @copyright   (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright   (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link        https://www.kunena.org
  **/
 defined('_JEXEC') or die;
@@ -22,7 +22,7 @@ if ($title == "COM_KUNENA_BUTTON_{$this->scope}_{$this->name}_LONG")
 $id      = isset($this->id) ? ' id="' . $this->id . '"' : '';
 $primary = !empty($this->primary) ? ' btn-primary' : '';
 ?>
-<a<?php echo $id; ?> class="btn <?php echo $primary; ?>" href="<?php echo $this->url; ?>" rel="nofollow"
+<a<?php echo $id; ?> class="btn <?php echo $primary; ?>" href="<?php echo $this->url; ?>"
 	title="<?php echo $title; ?>">
 	<span class="<?php echo $this->name; ?>"></span>
 	<?php echo $label; ?>

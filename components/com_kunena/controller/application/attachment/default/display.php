@@ -4,8 +4,8 @@
  * @package     Kunena.Site
  * @subpackage  Controller.Application
  *
- * @copyright   (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright   (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link        https://www.kunena.org
  **/
 defined('_JEXEC') or die;
@@ -22,7 +22,7 @@ class ComponentKunenaControllerApplicationAttachmentDefaultDisplay extends Kunen
 	/**
 	 * Return true if layout exists.
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function exists()
 	{
@@ -119,7 +119,9 @@ class ComponentKunenaControllerApplicationAttachmentDefaultDisplay extends Kunen
 		}
 
 		// Close all output buffers, just in case.
-		while(@ob_end_clean());
+		while (@ob_end_clean())
+		{
+		}
 
 		// Handle 304 Not Modified
 		if (isset($_SERVER['HTTP_IF_NONE_MATCH']))
@@ -135,7 +137,6 @@ class ComponentKunenaControllerApplicationAttachmentDefaultDisplay extends Kunen
 				$this->app->close();
 			}
 		}
-
 
 		// Set file headers.
 		header('ETag: ' . $attachment->hash);

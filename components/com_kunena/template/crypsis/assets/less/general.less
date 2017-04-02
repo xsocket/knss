@@ -2,8 +2,8 @@
 * Kunena Component
 * @package Kunena.Template.Crypsis
 *
-* @copyright (C) 2008 - 2016 Kunena Team. All rights reserved.
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+* @copyright (C) 2008 - 2017 Kunena Team. All rights reserved.
+* @license https://www.gnu.org/copyleft/gpl.html GNU/GPL
 * @link https://www.kunena.org
 **/
 
@@ -78,7 +78,7 @@ h3 {
 	}
 }
 
-.knewchar {
+sup.knewchar {
 	padding-left : 3px;
 }
 
@@ -281,11 +281,6 @@ a:focus,
 	border-radius : 4px;
 }
 
-.horizontal-message-bottom .kmsg {
-	margin-top   : 50px;
-	padding-left : 10px;
-}
-
 .horizontal-message .kmessage {
 	padding : 30px 10px 0;
 }
@@ -393,7 +388,7 @@ form {
 	height    : 100%;
 	margin    : 20px 0;
 	word-wrap : break-word;
-	font-family: "Segoe UI", "Segoe UI Emoji", "Segoe UI Symbol";
+	font-family: "Segoe UI", "Segoe UI Emoji", "Segoe UI Symbol", Helvetica , Arial, sans-serif;
 }
 
 .input-xxlarge {
@@ -976,35 +971,35 @@ div.krating > label:active {
 }
 
 .dropdown-toggle img.green {
-	margin-top: 0 !important;
+	margin-top: -2px !important;
 	-webkit-box-shadow: 0 0 0 2px green, 0 0 0 4px #ccc, 0 2px 5px 4px rgba(0, 0, 0, 0.1);
 	-moz-box-shadow: 0 0 0 2px green, 0 0 0 4px #ccc, 0 2px 5px 4px rgba(0, 0, 0, 0.1);
-	box-shadow: 0px 0px 0px 2px green, 0px 0px 0px 4px #ccc, 0px 2px 5px 4px rgba(0,0,0,0.1);
+	box-shadow: 0 0 0 2px green, 0 0 0 4px #ccc, 0 2px 5px 4px rgba(0,0,0,0.1);
 }
 
 .dropdown-toggle img.yellow {
-	margin-top: 0 !important;
+	margin-top: -2px !important;
 	-webkit-box-shadow: 0 0 0 2px yellow, 0 0 0 4px #ccc, 0 2px 5px 4px rgba(0, 0, 0, 0.1);
 	-moz-box-shadow: 0 0 0 2px yellow, 0 0 0 4px #ccc, 0 2px 5px 4px rgba(0, 0, 0, 0.1);
-	box-shadow: 0px 0px 0px 2px yellow, 0px 0px 0px 4px #ccc, 0px 2px 5px 4px rgba(0,0,0,0.1);
+	box-shadow: 0 0 0 2px yellow, 0 0 0 4px #ccc, 0 2px 5px 4px rgba(0,0,0,0.1);
 }
 
 .dropdown-toggle img.red {
-	margin-top: 0 !important;
+	margin-top: -2px !important;
 	-webkit-box-shadow: 0 0 0 2px red, 0 0 0 4px #ccc, 0 2px 5px 4px rgba(0, 0, 0, 0.1);
 	-moz-box-shadow: 0 0 0 2px red, 0 0 0 4px #ccc, 0 2px 5px 4px rgba(0, 0, 0, 0.1);
-	box-shadow: 0px 0px 0px 2px red, 0px 0px 0px 4px #ccc, 0px 2px 5px 4px rgba(0,0,0,0.1);
+	box-shadow: 0 0 0 2px red, 0 0 0 4px #ccc, 0 2px 5px 4px rgba(0,0,0,0.1);
 }
 
 .dropdown-toggle img.grey {
-	margin-top: 0 !important;
+	margin-top: -2px !important;
 	-webkit-box-shadow: 0 0 0 2px grey, 0 0 0 4px #ccc, 0 2px 5px 4px rgba(0, 0, 0, 0.1);
 	-moz-box-shadow: 0 0 0 2px grey, 0 0 0 4px #ccc, 0 2px 5px 4px rgba(0, 0, 0, 0.1);
-	box-shadow: 0px 0px 0px 2px grey, 0px 0px 0px 4px #ccc, 0px 2px 5px 4px rgba(0,0,0,0.1);
+	box-shadow: 0 0 0 2px grey, 0 0 0 4px #ccc, 0 2px 5px 4px rgba(0,0,0,0.1);
 }
 
 .dropdown-toggle img.none {
-	margin-top: 0 !important;
+	margin-top: -2px !important;
 	box-shadow: 0 0 0 1px #d4d4d4, 0 0 0 0 #fff, 0 1px 1px rgba(0,0,0,0.1);
 }
 
@@ -1012,6 +1007,7 @@ div.krating > label:active {
 	text-decoration: none;
 }
 
+#nav-menu img,
 .span3 .img-circle {
 	width: 80%;
 }
@@ -1072,7 +1068,7 @@ div.krating > label:active {
 
 .embed-container {
 	position: relative;
-	padding-bottom: 120%;
+	padding-bottom: 140%;
 	height: 0;
 	overflow: hidden;
 }
@@ -1100,3 +1096,60 @@ div.krating > label:active {
 #ann-date3 .date {
 	display: inline-block !important;
 }
+
+#searchatdate .date {
+	display: inline-block !important;
+}
+
+.dropdown-toggle .img-polaroid {
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+
+.inputbox#catid {
+	max-width: 250px;
+}
+
+#whoisonlinelist .img-circle  {
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+
+.search-query {
+	width: auto;
+}
+
+/* styling for message header */
+.mykmsg-header {
+    margin-top: 0px;
+    background: rgba(229,229,229,0.4);
+    padding: 10px 19px 12px 14px !important;
+    margin-left: -15px;
+    margin-right:-20px;
+    font-weight: bold;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+/* make .badger-left::after invisible */
+.badger-left::after {
+    border-radius: 0px !important;
+    height: 0px !important;
+}
+
+[class*="badger"]::after {
+    padding: 0 !important;
+    border-right: none !important;
+    border-bottom: none !important;
+}
+
+[class*="badger-left"] {
+    padding: 0 19px 0 14px !important;
+}
+
+#btn_thankyou {
+	margin-top: 10px;
+	margin-left: 0;
+}
+

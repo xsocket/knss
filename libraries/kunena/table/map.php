@@ -4,11 +4,11 @@
  * @package Kunena.Framework
  * @subpackage Table
  *
- * @copyright (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link https://www.kunena.org
  **/
-defined ( '_JEXEC' ) or die ();
+defined('_JEXEC') or die();
 
 /**
  * Class KunenaTableMap
@@ -118,14 +118,17 @@ class KunenaTableMap
 	{
 		$properties = (array) $this;
 		$list = array();
-		foreach ($properties as $property=>$value)
+		foreach ($properties as $property => $value)
 		{
-			if ($property[0] != "\0") $list[$property] = $value;
+			if ($property[0] != "\0") { $list[$property] = $value; }
 		}
 
 		return $list;
 	}
 
+	/**
+	 * @return mixed
+	 */
 	public function getMirrorInstance()
 	{
 		static $instance = array();
@@ -145,7 +148,7 @@ class KunenaTableMap
 	 *
 	 * @return  string  The name of the database table being modeled.
 	 *
-	 * @link    http://docs.joomla.org/JTable/getTableName
+	 * @link    https://docs.joomla.org/JTable/getTableName
 	 */
 	public function getTableName()
 	{
@@ -157,7 +160,7 @@ class KunenaTableMap
 	 *
 	 * @return  string  The name of the primary key for the table.
 	 *
-	 * @link    http://docs.joomla.org/JTable/getKeyName
+	 * @link    https://docs.joomla.org/JTable/getKeyName
 	 */
 	public function getKeyName()
 	{
@@ -179,7 +182,7 @@ class KunenaTableMap
 	 *
 	 * @return  JDatabaseDriver  The internal database driver object.
 	 *
-	 * @link    http://docs.joomla.org/JTable/getDBO
+	 * @link    https://docs.joomla.org/JTable/getDBO
 	 */
 	public function getDbo()
 	{
@@ -199,7 +202,7 @@ class KunenaTableMap
 	/**
 	 * Method to set the primary key.
 	 *
-	 * @param  int  $id  Set value for the primary key.
+	 * @param   int  $id  Set value for the primary key.
 	 *
 	 * @return $this
 	 */
@@ -223,18 +226,18 @@ class KunenaTableMap
 	/**
 	 * Method to set the mapped value.
 	 *
-	 * @param  array  $list  Set array of mapped objects.
+	 * @param   array  $list  Set array of mapped objects.
 	 */
 	public function setMapped(array $list)
 	{
-		JArrayHelper::toInteger($list);
+		Joomla\Utilities\ArrayHelper::toInteger($list);
 		$this->{$this->_tbl_mapped} = $list;
 	}
 
 	/**
 	 * Method to add relation.
 	 *
-	 * @param  int  $id  Add Id.
+	 * @param   int  $id  Add Id.
 	 *
 	 * @return $this
 	 */
@@ -251,7 +254,7 @@ class KunenaTableMap
 	/**
 	 * Method to remove relation.
 	 *
-	 * @param  int  $id  Add Id.
+	 * @param   int  $id  Add Id.
 	 *
 	 * @return $this
 	 */
@@ -274,7 +277,7 @@ class KunenaTableMap
 	 *
 	 * @return  boolean  True on success.
 	 *
-	 * @link    http://docs.joomla.org/JTable/setDbo
+	 * @link    https://docs.joomla.org/JTable/setDbo
 	 */
 	public function setDbo(JDatabaseDriver $db)
 	{
@@ -290,7 +293,7 @@ class KunenaTableMap
 	 *
 	 * @return  void
 	 *
-	 * @link    http://docs.joomla.org/JTable/reset
+	 * @link    https://docs.joomla.org/JTable/reset
 	 */
 	public function reset()
 	{
@@ -315,7 +318,7 @@ class KunenaTableMap
 	 *
 	 * @return  boolean  True on success.
 	 *
-	 * @link    http://docs.joomla.org/JTable/bind
+	 * @link    https://docs.joomla.org/JTable/bind
 	 * @throws  InvalidArgumentException
 	 */
 	public function bind($src, $ignore = array())
@@ -364,7 +367,7 @@ class KunenaTableMap
 	 *
 	 * @return  boolean  True if successful. False if no rows were found.
 	 *
-	 * @link    http://docs.joomla.org/JTable/load
+	 * @link    https://docs.joomla.org/JTable/load
 	 * @throws  RuntimeException
 	 * @throws  UnexpectedValueException
 	 */
@@ -429,7 +432,7 @@ class KunenaTableMap
 	 *
 	 * @return  boolean  True if the instance is sane and able to be stored in the database.
 	 *
-	 * @link    http://docs.joomla.org/JTable/check
+	 * @link    https://docs.joomla.org/JTable/check
 	 */
 	public function check()
 	{
@@ -443,7 +446,7 @@ class KunenaTableMap
 	 *
 	 * @return  boolean  True on success.
 	 *
-	 * @link    http://docs.joomla.org/JTable/store
+	 * @link    https://docs.joomla.org/JTable/store
 	 * @throws  UnexpectedValueException
 	 */
 	public function store(array $filter = null)
@@ -474,7 +477,7 @@ class KunenaTableMap
 				$values = array();
 				foreach ($added as $var)
 				{
-					$values[] = (int) $id .','. (int) $var;
+					$values[] = (int) $id . ',' . (int) $var;
 				}
 
 				$query = $this->_db->getQuery(true);
@@ -489,12 +492,11 @@ class KunenaTableMap
 			if ($deleted) {
 				$query = $this->_db->getQuery(true);
 				$query->delete($this->_db->qn($this->_tbl));
-				$query->where($this->_db->qn($this->_tbl_key).'='.(int) $id);
-				$query->where($this->_db->qn($this->_tbl_mapped).' IN ('.implode(',', $deleted).')');
+				$query->where($this->_db->qn($this->_tbl_key) . '=' . (int) $id);
+				$query->where($this->_db->qn($this->_tbl_mapped) . ' IN (' . implode(',', $deleted) . ')');
 				$this->_db->setQuery($query);
 				$this->_db->execute();
 			}
-
 		}
 		else
 		{
@@ -551,7 +553,7 @@ class KunenaTableMap
 	 *
 	 * @return  boolean  True on success.
 	 *
-	 * @link    http://docs.joomla.org/JTable/delete
+	 * @link    https://docs.joomla.org/JTable/delete
 	 * @throws  UnexpectedValueException
 	 */
 	public function delete($pk = null)
@@ -576,7 +578,7 @@ class KunenaTableMap
 		$query->delete();
 		$query->from($this->_tbl);
 
-		foreach ($pk as $key=>$value)
+		foreach ($pk as $key => $value)
 		{
 			$query->where($key . ' = ' . $this->_db->quote($value));
 		}

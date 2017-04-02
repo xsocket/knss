@@ -4,8 +4,8 @@
  * @package     Kunena.Site
  * @subpackage  Controller.Application
  *
- * @copyright   (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright   (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link        https://www.kunena.org
  **/
 defined('_JEXEC') or die;
@@ -20,7 +20,7 @@ class ComponentKunenaControllerApplicationTopicUnreadDisplay extends KunenaContr
 	/**
 	 * Return true if layout exists.
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public function exists()
 	{
@@ -49,8 +49,21 @@ class ComponentKunenaControllerApplicationTopicUnreadDisplay extends KunenaContr
 		$message = KunenaForumMessageHelper::get($topic->lastread ? $topic->lastread : $topic->last_post_id);
 		$message->tryAuthorise();
 
-		while (@ob_end_clean());
+		while (@ob_end_clean())
+		{
+		}
 
 		$this->app->redirect($topic->getUrl($category, false, $message));
+	}
+
+	/**
+	 * Prepare document.
+	 *
+	 * @return void
+	 */
+	protected function prepareDocument()
+	{
+		$doc = JFactory::getDocument();
+		$doc->setMetaData('robots', 'follow, noindex');
 	}
 }

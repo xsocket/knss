@@ -4,8 +4,8 @@
  * @package     Kunena.Site
  * @subpackage  Controller.Widget
  *
- * @copyright   (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright   (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link        https://www.kunena.org
  **/
 defined('_JEXEC') or die;
@@ -24,7 +24,7 @@ class ComponentKunenaControllerWidgetAnnouncementDisplay extends KunenaControlle
 	/**
 	 * Prepare announcement box display.
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	protected function before()
 	{
@@ -48,7 +48,8 @@ class ComponentKunenaControllerWidgetAnnouncementDisplay extends KunenaControlle
 		$view = $this->input->getWord('view', 'default');
 		$layout = $this->input->getWord('layout', 'default');
 
-		if ($view == 'topic' && $layout != 'default'  || $view == 'user' || $view == 'search' || $view == 'announcement' && $layout == 'default') {
+		if ($view == 'topic' && $layout != 'default'  || $view == 'user' || $view == 'search' || $view == 'announcement' && $layout == 'default')
+		{
 			return false;
 		}
 

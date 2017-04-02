@@ -4,11 +4,11 @@
  * @package Kunena.Framework
  * @subpackage Integration
  *
- * @copyright (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link https://www.kunena.org
  **/
-defined ( '_JEXEC' ) or die ();
+defined('_JEXEC') or die();
 
 /**
  * Class KunenaIntegrationActivity
@@ -21,10 +21,13 @@ class KunenaIntegrationActivity
 
 	protected static $instance;
 
+	/**
+	 *
+	 */
 	public function __construct()
 	{
 		JPluginHelper::importPlugin('kunena');
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 		$classes = $dispatcher->trigger('onKunenaGetActivity');
 
 		foreach ($classes as $class)
@@ -38,6 +41,9 @@ class KunenaIntegrationActivity
 		}
 	}
 
+	/**
+	 * @return static
+	 */
 	static public function getInstance()
 	{
 		if (!self::$instance)

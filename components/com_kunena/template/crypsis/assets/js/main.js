@@ -2,8 +2,8 @@
  * Kunena Component
  * @package Kunena.Template.Crypsis
  *
- * @copyright (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link https://www.kunena.org
  **/
 
@@ -16,29 +16,9 @@ function kunenatableOrdering( order, dir, task, form ) {
 }
 
 jQuery(document).ready(function($) {
-	/* To hide or open collapse localStorage */
-	$('.collapse').on('hidden', function() {
-		if (this.id) {
-			if (this.id!='search')
-			{
-				localStorage[this.id] = 'true';
-			}
-		}
-		}).on('shown', function() {
-			if (this.id) {
-				localStorage.removeItem(this.id);
-		}
-		}).each(function() {
-			if (this.id && localStorage[this.id] === 'true' ) {
-				$(this).collapse('hide');
-		}
-	});
-
 	/* To check or uncheck boxes to select items */
 	$('input.kcheckall').click(function() {
-		$( '.kcheck' ).each(function( ) {
-			$(this).prop('checked',!$(this).prop('checked'));
-		});
+		$('.kcheck').prop('checked', $(this).prop("checked"));
 	});
 
 	/* Allow to make working drop-down choose destination */
@@ -74,7 +54,7 @@ jQuery(document).ready(function($) {
 		// Get the list of images from the gallery selected drop-down above
 		$.ajax({
 			 dataType: "json",
-			 url: 'index.php?option=com_kunena&view=user&layout=galleryimages&format=raw',
+			 url: $('#kunena_url_avatargallery').val(),
 			 data: 'gallery_name=' + gallery_selected
 		}).done(function(response) {
        $.each(response, function( key, value ) {
@@ -102,5 +82,11 @@ jQuery(document).ready(function($) {
 			format: "yyyy-mm-dd"
 		});
 	}
+
+	$('#clearcache').on('click', function (e) {
+		e.preventDefault();
+		$('#clearcache').addClass('btn-success');
+		$('#clearcache').html('<i class="icon-checkmark-2"></i>' + Joomla.JText._('COM_KUNENA_CLEARED'));
+	});
 });
 

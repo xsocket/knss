@@ -4,11 +4,11 @@
  * @package Kunena.Framework
  * @subpackage Forum
  *
- * @copyright (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link https://www.kunena.org
  **/
-defined ( '_JEXEC' ) or die ();
+defined('_JEXEC') or die();
 
 /**
  * Class KunenaForumDiagnostics
@@ -46,23 +46,26 @@ abstract class KunenaForumDiagnostics
 			'userReadOrphaned',
 			'userReadWrongCategory',
 			'userTopicOrphaned',
-			'userTopicWrongCategory'
+			'userTopicWrongCategory',
+			'ratingOrphaned',
+			'channelOrphaned'
 		);
 	}
 
 	/**
-	 * @param string $function
+	 * @param   string $function
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public static function count($function)
 	{
-		$function = 'query_'.$function;
+		$function = 'query_' . $function;
 
 		if (method_exists(__CLASS__, $function))
 		{
 			$query = self::$function();
-			/** @var KunenaDatabaseQuery $query */
+			// @var KunenaDatabaseQuery $query
+
 			$query->select("COUNT(*)");
 			$db = JFactory::getDbo();
 			$db->setQuery($query);
@@ -74,18 +77,18 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param string $function
+	 * @param   string $function
 	 *
 	 * @return array
 	 */
 	public static function getItems($function)
 	{
-		$queryFunction = 'query_'.$function;
+		$queryFunction = 'query_' . $function;
 
 		if (method_exists(__CLASS__, $queryFunction))
 		{
 			$query = self::$queryFunction();
-			$fieldsFunction = 'fields_'.$function;
+			$fieldsFunction = 'fields_' . $function;
 
 			if (!method_exists(__CLASS__, $fieldsFunction))
 			{
@@ -103,13 +106,13 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param string $function
+	 * @param   string $function
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public static function fix($function)
 	{
-		$queryFunction = 'fix_'.$function;
+		$queryFunction = 'fix_' . $function;
 
 		if (method_exists(__CLASS__, $queryFunction))
 		{
@@ -117,20 +120,20 @@ abstract class KunenaForumDiagnostics
 			$db = JFactory::getDbo();
 			$db->setQuery($query);
 
-			return (bool) $db->query();
+			return (bool) $db->execute();
 		}
 
 		return false;
 	}
 
 	/**
-	 * @param string $function
+	 * @param   string $function
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public static function canFix($function)
 	{
-		$queryFunction = 'fix_'.$function;
+		$queryFunction = 'fix_' . $function;
 
 		if (method_exists(__CLASS__, $queryFunction))
 		{
@@ -141,13 +144,13 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param string $function
+	 * @param   string $function
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public static function delete($function)
 	{
-		$queryFunction = 'delete_'.$function;
+		$queryFunction = 'delete_' . $function;
 
 		if (method_exists(__CLASS__, $queryFunction))
 		{
@@ -155,20 +158,20 @@ abstract class KunenaForumDiagnostics
 			$db = JFactory::getDbo();
 			$db->setQuery($query);
 
-			return (bool) $db->query();
+			return (bool) $db->execute();
 		}
 
 		return false;
 	}
 
 	/**
-	 * @param string $function
+	 * @param   string $function
 	 *
-	 * @return bool
+	 * @return boolean
 	 */
 	public static function canDelete($function)
 	{
-		$queryFunction = 'delete_'.$function;
+		$queryFunction = 'delete_' . $function;
 
 		if (method_exists(__CLASS__, $queryFunction))
 		{
@@ -189,7 +192,7 @@ abstract class KunenaForumDiagnostics
 
 		if (!isset($fields[$function]))
 		{
-			$fieldsFunction = 'fields_'.$function;
+			$fieldsFunction = 'fields_' . $function;
 
 			if (!method_exists(__CLASS__, $fieldsFunction))
 			{
@@ -203,18 +206,19 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param string $function
+	 * @param   string $function
 	 *
 	 * @return string|null
 	 */
 	public static function getQuery($function)
 	{
-		$function = 'query_'.$function;
+		$function = 'query_' . $function;
 
 		if (method_exists(__CLASS__, $function))
 		{
 			$query = self::$function();
-			/** @var KunenaDatabaseQuery $query */
+			// @var KunenaDatabaseQuery $query
+
 			$query->select("COUNT(*)");
 			return (string) $query;
 		}
@@ -223,7 +227,7 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param KunenaDatabaseQuery $query
+	 * @param   KunenaDatabaseQuery $query
 	 *
 	 * @return array
 	 */
@@ -250,7 +254,17 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param KunenaDatabaseQuery $query
+	 * @return KunenaDatabaseQuery
+	 */
+	protected static function delete_categoryOrphaned()
+	{
+		$query = self::query_categoryOrphaned()->delete('a');
+
+		return $query;
+	}
+
+	/**
+	 * @param   KunenaDatabaseQuery $query
 	 *
 	 * @return array
 	 */
@@ -261,7 +275,7 @@ abstract class KunenaForumDiagnostics
 			$query->select('a.id, a.parent_id, a.name, a.alias, a.description');
 		}
 
-		return array('name'=>'link', 'parent_id'=>'invalid', '_link'=>'&view=categories&layout=edit&catid={$id}');
+		return array('name' => 'link', 'parent_id' => 'invalid', '_link' => '&view=categories&layout=edit&catid={$id}');
 	}
 
 	/**
@@ -277,7 +291,7 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param KunenaDatabaseQuery $query
+	 * @param   KunenaDatabaseQuery $query
 	 *
 	 * @return array
 	 */
@@ -288,7 +302,7 @@ abstract class KunenaForumDiagnostics
 			$query->select('a.id, a.parent_id, a.name, a.alias, a.description');
 		}
 
-		return array('name'=>'link', 'alias'=>'invalid', '_link'=>'&view=categories&layout=edit&catid={$id}');
+		return array('name' => 'link', 'alias' => 'invalid', '_link' => '&view=categories&layout=edit&catid={$id}');
 	}
 
 	/**
@@ -304,7 +318,7 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param KunenaDatabaseQuery $query
+	 * @param   KunenaDatabaseQuery $query
 	 *
 	 * @return array
 	 */
@@ -315,7 +329,7 @@ abstract class KunenaForumDiagnostics
 			$query->select('a.id, a.parent_id, a.name, a.alias, a.description');
 		}
 
-		return array('name'=>'link', 'alias'=>'invalid', '_link'=>'&view=categories&layout=edit&catid={$id}');
+		return array('name' => 'link', 'alias' => 'invalid', '_link' => '&view=categories&layout=edit&catid={$id}');
 	}
 
 	/**
@@ -333,7 +347,7 @@ abstract class KunenaForumDiagnostics
 	/**
 	 * @return KunenaDatabaseQuery
 	 */
-	protected static function fix_aliasMissingCategory()
+	protected static function delete_aliasMissingCategory()
 	{
 		$query = self::query_aliasMissingCategory()->delete('a');
 
@@ -341,7 +355,7 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param KunenaDatabaseQuery $query
+	 * @param   KunenaDatabaseQuery $query
 	 *
 	 * @return array
 	 */
@@ -352,7 +366,7 @@ abstract class KunenaForumDiagnostics
 			$query->select('a.*');
 		}
 
-		return array('item'=>'invalid');
+		return array('item' => 'invalid');
 	}
 
 	/**
@@ -378,7 +392,7 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param KunenaDatabaseQuery $query
+	 * @param   KunenaDatabaseQuery $query
 	 *
 	 * @return array
 	 */
@@ -389,7 +403,7 @@ abstract class KunenaForumDiagnostics
 			$query->select('a.*');
 		}
 
-		return array('mesid'=>'invalid');
+		return array('mesid' => 'invalid');
 	}
 
 	/**
@@ -415,7 +429,7 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param KunenaDatabaseQuery $query
+	 * @param   KunenaDatabaseQuery $query
 	 *
 	 * @return array
 	 */
@@ -426,7 +440,7 @@ abstract class KunenaForumDiagnostics
 			$query->select("a.id, a.parent, a.thread, a.catid, a.hold, a.name, a.userid, a.subject, FROM_UNIXTIME(a.time) AS time, 'MISSING' AS message");
 		}
 
-		return array('message'=>'invalid');
+		return array('message' => 'invalid');
 	}
 
 	/**
@@ -442,7 +456,7 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param KunenaDatabaseQuery $query
+	 * @param   KunenaDatabaseQuery $query
 	 *
 	 * @return array
 	 */
@@ -453,7 +467,17 @@ abstract class KunenaForumDiagnostics
 			$query->select('a.id, a.category_id, a.hold, a.subject');
 		}
 
-		return array('category_id'=>'invalid');
+		return array('category_id' => 'invalid');
+	}
+
+	/**
+	 * @return KunenaDatabaseQuery
+	 */
+	protected static function delete_topicInSection()
+	{
+		$query = self::query_topicInSection()->delete('a');
+
+		return $query;
 	}
 
 	/**
@@ -469,7 +493,7 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param KunenaDatabaseQuery $query
+	 * @param   KunenaDatabaseQuery $query
 	 *
 	 * @return array
 	 */
@@ -480,7 +504,17 @@ abstract class KunenaForumDiagnostics
 			$query->select('a.id, a.category_id, a.hold, a.subject');
 		}
 
-		return array('category_id'=>'invalid');
+		return array('category_id' => 'invalid');
+	}
+
+	/**
+	 * @return KunenaDatabaseQuery
+	 */
+	protected static function delete_topicMissingCategory()
+	{
+		$query = self::query_topicMissingCategory()->delete('a');
+
+		return $query;
 	}
 
 	/**
@@ -506,7 +540,7 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param KunenaDatabaseQuery $query
+	 * @param   KunenaDatabaseQuery $query
 	 *
 	 * @return array
 	 */
@@ -517,7 +551,7 @@ abstract class KunenaForumDiagnostics
 			$query->select("a.id, a.category_id, a.hold, a.subject, 'MISSING' AS messages");
 		}
 
-		return array('messages'=>'invalid');
+		return array('messages' => 'invalid');
 	}
 
 	/**
@@ -533,7 +567,17 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param KunenaDatabaseQuery $query
+	 * @return KunenaDatabaseQuery
+	 */
+	protected static function delete_topicMissingPoll()
+	{
+		$query = self::query_topicMissingPoll()->delete('a');
+
+		return $query;
+	}
+
+	/**
+	 * @param   KunenaDatabaseQuery $query
 	 *
 	 * @return array
 	 */
@@ -544,7 +588,7 @@ abstract class KunenaForumDiagnostics
 			$query->select("a.id, a.category_id, a.hold, a.subject, poll_id");
 		}
 
-		return array('poll_id'=>'invalid');
+		return array('poll_id' => 'invalid');
 	}
 
 	/**
@@ -560,7 +604,17 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param KunenaDatabaseQuery $query
+	 * @return KunenaDatabaseQuery
+	 */
+	protected static function delete_topicPollMismatch()
+	{
+		$query = self::query_topicPollMismatch()->delete('a');
+
+		return $query;
+	}
+
+	/**
+	 * @param   KunenaDatabaseQuery $query
 	 *
 	 * @return array
 	 */
@@ -571,7 +625,7 @@ abstract class KunenaForumDiagnostics
 			$query->select("a.id, a.category_id, a.hold, a.subject, p.title AS poll_title, CONCAT(a.poll_id, ' != ', p.threadid) AS poll_id, t.subject AS real_topic_subject");
 		}
 
-		return array('poll_id'=>'invalid');
+		return array('poll_id' => 'invalid');
 	}
 
 	/**
@@ -589,7 +643,7 @@ abstract class KunenaForumDiagnostics
 	/**
 	 * @return KunenaDatabaseQuery
 	 */
-	protected static function fix_movedMissingTopic()
+	protected static function delete_movedMissingTopic()
 	{
 		$query = self::query_movedMissingTopic()->delete('a');
 
@@ -597,7 +651,7 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param KunenaDatabaseQuery $query
+	 * @param   KunenaDatabaseQuery $query
 	 *
 	 * @return array
 	 */
@@ -608,7 +662,7 @@ abstract class KunenaForumDiagnostics
 			$query->select('a.id, a.category_id, a.hold, a.subject, a.moved_id');
 		}
 
-		return array('moved_id'=>'invalid');
+		return array('moved_id' => 'invalid');
 	}
 
 	/**
@@ -624,7 +678,17 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param KunenaDatabaseQuery $query
+	 * @return KunenaDatabaseQuery
+	 */
+	protected static function delete_movedAndMessages()
+	{
+		$query = self::query_movedAndMessages()->delete('a');
+
+		return $query;
+	}
+
+	/**
+	 * @param   KunenaDatabaseQuery $query
 	 *
 	 * @return array
 	 */
@@ -635,7 +699,7 @@ abstract class KunenaForumDiagnostics
 			$query->select('a.id, a.category_id, a.hold, a.subject, m.id AS mesid, m.subject AS message_subject, t.message');
 		}
 
-		return array('mesid'=>'invalid');
+		return array('mesid' => 'invalid');
 	}
 
 	/**
@@ -649,6 +713,7 @@ abstract class KunenaForumDiagnostics
 
 		return $query;
 	}
+
 	/**
 	 * @return KunenaDatabaseQuery
 	 */
@@ -660,7 +725,7 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param KunenaDatabaseQuery $query
+	 * @param   KunenaDatabaseQuery $query
 	 *
 	 * @return array
 	 */
@@ -671,7 +736,7 @@ abstract class KunenaForumDiagnostics
 			$query->select("a.id, a.parent, a.thread, CONCAT(a.catid, ' != ', t.category_id) AS catid, a.hold, a.name, a.userid, a.subject, FROM_UNIXTIME(a.time) AS time, mt.message");
 		}
 
-		return array('catid'=>'invalid');
+		return array('catid' => 'invalid');
 	}
 
 	/**
@@ -697,7 +762,7 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param KunenaDatabaseQuery $query
+	 * @param   KunenaDatabaseQuery $query
 	 *
 	 * @return array
 	 */
@@ -708,7 +773,7 @@ abstract class KunenaForumDiagnostics
 			$query->select("a.id, a.parent, a.thread, a.catid, a.hold, a.name, a.userid, a.subject, FROM_UNIXTIME(a.time) AS time, mt.message");
 		}
 
-		return array('thread'=>'invalid');
+		return array('thread' => 'invalid');
 	}
 
 	/**
@@ -724,7 +789,17 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param KunenaDatabaseQuery $query
+	 * @return KunenaDatabaseQuery
+	 */
+	protected static function delete_attachmentOrphaned()
+	{
+		$query = self::query_attachmentOrphaned()->delete('a');
+
+		return $query;
+	}
+
+	/**
+	 * @param   KunenaDatabaseQuery $query
 	 *
 	 * @return array
 	 */
@@ -735,7 +810,7 @@ abstract class KunenaForumDiagnostics
 			$query->select('a.id, a.mesid, a.userid, a.folder, a.filename');
 		}
 
-		return array('mesid'=>'invalid');
+		return array('mesid' => 'invalid');
 	}
 
 	/**
@@ -761,7 +836,7 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param KunenaDatabaseQuery $query
+	 * @param   KunenaDatabaseQuery $query
 	 *
 	 * @return array
 	 */
@@ -772,7 +847,7 @@ abstract class KunenaForumDiagnostics
 			$query->select('a.*');
 		}
 
-		return array('threadid'=>'invalid');
+		return array('threadid' => 'invalid');
 	}
 
 	/**
@@ -788,7 +863,17 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param KunenaDatabaseQuery $query
+	 * @return KunenaDatabaseQuery
+	 */
+	protected static function delete_pollTopicMismatch()
+	{
+		$query = self::query_pollTopicMismatch()->delete('a');
+
+		return $query;
+	}
+
+	/**
+	 * @param   KunenaDatabaseQuery $query
 	 *
 	 * @return array
 	 */
@@ -799,7 +884,7 @@ abstract class KunenaForumDiagnostics
 			$query->select("a.id, a.title, CONCAT(a.threadid, ' != ', IF(tt.id,tt.id,'0')) AS threadid, t.subject AS topic1_subject, tt.subject AS topic2_subject");
 		}
 
-		return array('threadid'=>'invalid');
+		return array('threadid' => 'invalid');
 	}
 
 	/**
@@ -825,7 +910,7 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param KunenaDatabaseQuery $query
+	 * @param   KunenaDatabaseQuery $query
 	 *
 	 * @return array
 	 */
@@ -836,7 +921,7 @@ abstract class KunenaForumDiagnostics
 			$query->select('a.*');
 		}
 
-		return array('pollid'=>'invalid');
+		return array('pollid' => 'invalid');
 	}
 
 	/**
@@ -862,7 +947,7 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param KunenaDatabaseQuery $query
+	 * @param   KunenaDatabaseQuery $query
 	 *
 	 * @return array
 	 */
@@ -873,7 +958,7 @@ abstract class KunenaForumDiagnostics
 			$query->select('a.*');
 		}
 
-		return array('pollid'=>'invalid');
+		return array('pollid' => 'invalid');
 	}
 
 	/**
@@ -899,7 +984,7 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param KunenaDatabaseQuery $query
+	 * @param   KunenaDatabaseQuery $query
 	 *
 	 * @return array
 	 */
@@ -910,7 +995,7 @@ abstract class KunenaForumDiagnostics
 			$query->select('a.*');
 		}
 
-		return array('postid'=>'invalid');
+		return array('postid' => 'invalid');
 	}
 
 	/**
@@ -928,7 +1013,7 @@ abstract class KunenaForumDiagnostics
 	/**
 	 * @return KunenaDatabaseQuery
 	 */
-	protected static function fix_userCategoryOrphaned()
+	protected static function delete_userCategoryOrphaned()
 	{
 		$query = self::query_userCategoryOrphaned()->delete('a');
 
@@ -936,7 +1021,7 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param KunenaDatabaseQuery $query
+	 * @param   KunenaDatabaseQuery $query
 	 *
 	 * @return array
 	 */
@@ -947,7 +1032,7 @@ abstract class KunenaForumDiagnostics
 			$query->select('a.*');
 		}
 
-		return array('category_id'=>'invalid');
+		return array('category_id' => 'invalid');
 	}
 
 	/**
@@ -965,7 +1050,7 @@ abstract class KunenaForumDiagnostics
 	/**
 	 * @return KunenaDatabaseQuery
 	 */
-	protected static function fix_userReadOrphaned()
+	protected static function delete_userReadOrphaned()
 	{
 		$query = self::query_userReadOrphaned()->delete('a');
 
@@ -973,7 +1058,7 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param KunenaDatabaseQuery $query
+	 * @param   KunenaDatabaseQuery $query
 	 *
 	 * @return array
 	 */
@@ -984,7 +1069,7 @@ abstract class KunenaForumDiagnostics
 			$query->select('a.*');
 		}
 
-		return array('topic_id'=>'invalid');
+		return array('topic_id' => 'invalid');
 	}
 
 	/**
@@ -1010,7 +1095,7 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param KunenaDatabaseQuery $query
+	 * @param   KunenaDatabaseQuery $query
 	 *
 	 * @return array
 	 */
@@ -1021,7 +1106,7 @@ abstract class KunenaForumDiagnostics
 			$query->select("a.user_id, a.topic_id, CONCAT(a.category_id, ' != ', t.category_id) AS category_id, a.message_id, FROM_UNIXTIME(a.time) AS time");
 		}
 
-		return array('category_id'=>'invalid');
+		return array('category_id' => 'invalid');
 	}
 
 	/**
@@ -1039,7 +1124,7 @@ abstract class KunenaForumDiagnostics
 	/**
 	 * @return KunenaDatabaseQuery
 	 */
-	protected static function fix_userTopicOrphaned()
+	protected static function delete_userTopicOrphaned()
 	{
 		$query = self::query_userTopicOrphaned()->delete('a');
 
@@ -1047,7 +1132,7 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param KunenaDatabaseQuery $query
+	 * @param   KunenaDatabaseQuery $query
 	 *
 	 * @return array
 	 */
@@ -1058,7 +1143,7 @@ abstract class KunenaForumDiagnostics
 			$query->select('a.user_id, a.topic_id, a.category_id, a.posts, a.last_post_id, a.owner, a.favorite, a.subscribed');
 		}
 
-		return array('topic_id'=>'invalid');
+		return array('topic_id' => 'invalid');
 	}
 
 	/**
@@ -1084,7 +1169,7 @@ abstract class KunenaForumDiagnostics
 	}
 
 	/**
-	 * @param KunenaDatabaseQuery $query
+	 * @param   KunenaDatabaseQuery $query
 	 *
 	 * @return array
 	 */
@@ -1095,19 +1180,126 @@ abstract class KunenaForumDiagnostics
 			$query->select("a.user_id, a.topic_id, CONCAT(a.category_id, ' != ', t.category_id) AS category_id, a.posts, a.last_post_id, a.owner, a.favorite, a.subscribed");
 		}
 
-		return array('category_id'=>'invalid');
+		return array('category_id' => 'invalid');
 	}
 
+	/**
+	 * @return KunenaDatabaseQuery
+	 */
+	protected static function query_ratingOrphaned()
+	{
+		// Query to find orphaned ratings
+		$query = new KunenaDatabaseQuery();
+		$query->from("#__kunena_rate AS r")->leftJoin("#__kunena_topics AS t ON t.id=r.topic_id")->where("t.id IS NULL");
+
+		return $query;
+	}
+
+	/**
+	 * @return KunenaDatabaseQuery
+	 */
+	protected static function delete_ratingOrphaned()
+	{
+		$query = self::query_ratingOrphaned()->delete('r');
+
+		return $query;
+	}
+
+	/**
+	 * @param   KunenaDatabaseQuery $query
+	 *
+	 * @return array
+	 */
+	protected static function fields_ratingOrphaned(KunenaDatabaseQuery $query = null)
+	{
+		if ($query)
+		{
+			$query->select('r.*');
+		}
+
+		return array('topic_id' => 'invalid');
+	}
+
+	/**
+	 * @return KunenaDatabaseQuery
+	 */
+	protected static function query_channelOrphaned()
+	{
+		// Query to find orphaned categories channels
+		$query = new KunenaDatabaseQuery();
+		$query->from("#__kunena_categories")->where("channels IS NULL OR 'none'");
+
+		return $query;
+	}
+
+	/**
+	 * @return KunenaDatabaseQuery
+	 */
+	protected static function fix_channelOrphaned()
+	{
+		$query = self::query_channelOrphaned()->update('#__kunena_categories')->set("channels='THIS'")->where("channels='none' OR channels=NULL");
+
+		return $query;
+	}
+
+	/**
+	 * @param   KunenaDatabaseQuery $query
+	 *
+	 * @return array
+	 */
+	protected static function fields_channelOrphaned(KunenaDatabaseQuery $query = null)
+	{
+		if ($query)
+		{
+			$query->select('*');
+		}
+
+		return array('channels' => 'invalid');
+	}
+
+	/**
+	 * @return KunenaDatabaseQuery
+	 */
+	protected static function query_ownerOrphaned()
+	{
+		// Query to find user read which do not belong in any existing topic
+		$query = new KunenaDatabaseQuery();
+		$query->from("#__kunena_topics AS t")->leftJoin("#__kunena_user_topics AS j ON j.topic_id=t.id")->where("t.first_post_userid > 0");
+		return $query;
+	}
+
+	/**
+	 * @return KunenaDatabaseQuery
+	 */
+	protected static function fix_ownerOrphaned()
+	{
+		$query = self::query_channelOrphaned()->update('#__kunena_categories')->set("channels='THIS'")->where("channels='none' OR channels=NULL");
+
+		return $query;
+	}
+
+	/**
+	 * @param   KunenaDatabaseQuery $query
+	 *
+	 * @return array
+	 */
+	protected static function fields_ownerOrphaned(KunenaDatabaseQuery $query = null)
+	{
+		if ($query)
+		{
+			$query->select('t.id, t.first_post_userid, 1');
+		}
+
+		return array('channels' => 'invalid');
+	}
 }
 /*
--- Fix category channels (category selection bug):
-UPDATE jos_kunena_categories SET channels='THIS' WHERE channels='none' OR channels=NULL
 
 -- Find and update topics without owners:
-INSERT INTO `j25_kunena_user_topics` (topic_id, user_id, owner)
+INSERT INTO `#__kunena_user_topics` (topic_id, user_id, owner)
 (SELECT t.id, t.first_post_userid, 1
-FROM j25_kunena_topics AS t
-INNER JOIN (SELECT topic_id, MAX(owner) AS owner FROM `j25_kunena_user_topics` GROUP BY topic_id HAVING owner=0) AS j ON j.topic_id=t.id
+FROM #__kunena_topics AS t
+INNER JOIN (SELECT topic_id, MAX(owner) AS owner FROM `#__kunena_user_topics` GROUP BY topic_id HAVING owner=0) AS j ON j.topic_id=t.id
 WHERE t.first_post_userid>0)
 ON DUPLICATE KEY UPDATE owner=1
 */

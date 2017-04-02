@@ -4,7 +4,7 @@
  * @package     Kunena.Template.Crypsis
  * @subpackage  Layout.Widget
  *
- * @copyright   (C) 2008 - 2016 Kunena Team. All rights reserved.
+ * @copyright   (C) 2008 - 2017 Kunena Team. All rights reserved.
  * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link        https://www.kunena.org
  **/
@@ -30,7 +30,7 @@ $form = $this->form;
 		<p><?php echo $description ?></p>
 		<div class="control-group">
 			<div class="controls">
-				<textarea <?php echo $name ?> style="resize: none; text-align: left" class="input-block-level" rows="3" maxlength="255"><?php echo $data; ?></textarea>
+				<textarea <?php echo $name ?> style="resize: none; text-align: left;" class="input-block-level" rows="3" maxlength="255"><?php echo $data; ?></textarea>
 			</div>
 		</div>
 	</div>

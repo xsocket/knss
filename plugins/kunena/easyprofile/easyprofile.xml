@@ -2,13 +2,13 @@
 <!DOCTYPE extension>
 <extension version="2.5" type="plugin" group="kunena" method="upgrade">
 	<name>PLG_KUNENA_EASYPROFILE</name>
-	<version>5.0.1</version>
-	<creationDate>2016-08-20</creationDate>
+	<version>5.0.7</version>
+	<creationDate>2017-03-31</creationDate>
 	<author>Onlinecommunityhub</author>
 	<authorEmail>info@onlinecommunityhub.nl</authorEmail>
 	<authorUrl>https://onlinecommunityhub.nl</authorUrl>
 	<copyright>https://onlinecommunityhub.nl</copyright>
-	<license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
+	<license>https://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
 	<description>PLG_KUNENA_EASYPROFILE_DESCRIPTION</description>
 	<files>
 		<filename plugin="easyprofile">easyprofile.php</filename>

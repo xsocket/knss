@@ -5,8 +5,8 @@
  * @package     Kunena.Administrator.Template
  * @subpackage  Config
  *
- * @copyright   (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright   (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link        https://www.kunena.org
  **/
 defined('_JEXEC') or die();
@@ -108,9 +108,10 @@ JHtml::_('behavior.tabstate');
 											</tr>
 											<tr>
 												<td><?php echo JText::_('COM_KUNENA_A_BOARD_OFFLINE_MES') ?></td>
-												<td colspan="2">
+												<td>
 													<textarea name="cfg_offline_message" rows="3" cols="50"><?php echo $this->escape($this->config->offline_message) ?></textarea>
 												</td>
+												<td><?php echo JText::_('COM_KUNENA_A_BOARD_OFFLINE_MES_DESC') ?></td>
 											</tr>
 											<tr>
 												<td><?php echo JText::_('COM_KUNENA_A_BOARD_READONLY') ?></td>
@@ -375,17 +376,17 @@ JHtml::_('behavior.tabstate');
 												<td align="left" valign="top"><?php echo JText::_('COM_KUNENA_CONFIGURATION_RATING_DESC') ?></td>
 											</tr>
 											<tr>
-												<td><?php echo JText::_('COM_KUNENA_CONFIG_ATTACHMENT_SHORTHEN_NAME_START') ?></td>
+												<td><?php echo JText::_('COM_KUNENA_CONFIG_ATTACHMENT_SHORTEN_NAME_START') ?></td>
 												<td>
 													<input type="text" name="cfg_attach_start" class="ksm-field" value="<?php echo $this->escape($this->config->attach_start) ?>" />
 												</td>
-												<td><?php echo JText::_('COM_KUNENA_CONFIG_ATTACHMENT_SHORTHEN_NAME_START_DESC') ?></td>
+												<td><?php echo JText::_('COM_KUNENA_CONFIG_ATTACHMENT_SHORTEN_NAME_START_DESC') ?></td>
 											</tr><tr>
-												<td><?php echo JText::_('COM_KUNENA_CONFIG_ATTACHMENT_SHORTHEN_NAME_END') ?></td>
+												<td><?php echo JText::_('COM_KUNENA_CONFIG_ATTACHMENT_SHORTEN_NAME_END') ?></td>
 												<td>
 													<input type="text" name="cfg_attach_end" class="ksm-field" value="<?php echo $this->escape($this->config->attach_end) ?>" />
 												</td>
-												<td><?php echo JText::_('COM_KUNENA_CONFIG_ATTACHMENT_SHORTHEN_NAME_END_DESC') ?></td>
+												<td><?php echo JText::_('COM_KUNENA_CONFIG_ATTACHMENT_SHORTEN_NAME_END_DESC') ?></td>
 											</tr>
 											</tbody>
 										</table>
@@ -495,6 +496,11 @@ JHtml::_('behavior.tabstate');
 												<td><?php echo $this->lists ['log_moderation'] ?></td>
 												<td><?php echo JText::_('COM_KUNENA_CONFIGURATION_LOG_COLLECT_DATA_DESC') ?></td>
 											</tr>
+											<tr>
+												<td><?php echo JText::_('COM_KUNENA_CONFIGURATION_USER_STATUS') ?></td>
+												<td><?php echo $this->lists ['user_status'] ?></td>
+												<td><?php echo JText::_('COM_KUNENA_CONFIGURATION_USER_STATUS_DESC') ?></td>
+											</tr>
 											</tbody>
 										</table>
 									</fieldset>
@@ -510,9 +516,19 @@ JHtml::_('behavior.tabstate');
 											</thead>
 											<tbody>
 											<tr>
+												<td><?php echo JText::_('COM_KUNENA_EMAIL_HEADER') ?></td>
+												<td><input name="cfg_emailheader" type="text" value="<?php echo $this->escape($this->config->emailheader) ?>"></td>
+												<td><?php echo JText::_('COM_KUNENA_EMAIL_HEADER_DESC') ?></td>
+											</tr>
+											<tr>
 												<td><?php echo JText::_('COM_KUNENA_A_SUBSCRIPTIONS') ?></td>
 												<td><?php echo $this->lists ['allowsubscriptions'] ?></td>
 												<td><?php echo JText::_('COM_KUNENA_A_SUBSCRIPTIONS_DESC') ?></td>
+											</tr>
+											<tr>
+												<td><?php echo JText::_('COM_KUNENA_PLAINEMAIL') ?></td>
+												<td><?php echo $this->lists ['plain_email'] ?></td>
+												<td><?php echo JText::_('COM_KUNENA_PLAINEMAIL_DESC') ?></td>
 											</tr>
 											<tr>
 												<td><?php echo JText::_('COM_KUNENA_MAILFULL') ?></td>
@@ -683,6 +699,27 @@ JHtml::_('behavior.tabstate');
 											</tbody>
 										</table>
 									</fieldset>
+									<fieldset>
+										<legend><?php echo JText::_('COM_KUNENA_STOP_FORUM_SPAM_CONFIGURATION') ?></legend>
+										<table class="table table-striped">
+											<thead>
+											<tr>
+												<th width="25%"><?php echo JText::_('COM_KUNENA_TABLEHEAD_TITLE') ?></th>
+												<th width="25%"><?php echo JText::_('COM_KUNENA_TABLEHEAD_OPTION') ?></th>
+												<th><?php echo JText::_('COM_KUNENA_TABLEHEAD_DESCRIPTION') ?></th>
+											</tr>
+											</thead>
+											<tbody>
+											<tr>
+												<td><?php echo JText::_('COM_KUNENA_STOP_FORUM_SPAM_KEY') ?></td>
+												<td>
+													<input type="text" name="cfg_stopforumspam_key" class="ksm-field-large" value="<?php echo $this->escape($this->config->stopforumspam_key) ?>" />
+												</td>
+												<td><?php echo JText::_('COM_KUNENA_STOP_FORUM_SPAM_KEY_DESC') ?></td>
+											</tr>
+											</tbody>
+										</table>
+									</fieldset>
 								</div>
 
 								<div class="tab-pane" id="tab_avatars">
@@ -712,24 +749,24 @@ JHtml::_('behavior.tabstate');
 												<td>
 													<input type="text" name="cfg_avatarsize" class="ksm-field" value="<?php echo $this->escape($this->config->avatarsize) ?>" /> kB
 												</td>
-												<td></td>
+												<td><?php echo JText::_('COM_KUNENA_A_AVSIZE_DESC') ?></td>
 											</tr>
 											<tr>
 												<td><?php echo JText::_('COM_KUNENA_AVATAR_QUALITY') ?></td>
 												<td class="nowrap">
 													<input type="text" name="cfg_avatarquality" class="ksm-field" value="<?php echo $this->escape($this->config->avatarquality) ?>" /> %
 												</td>
-												<td></td>
+												<td><?php echo JText::_('COM_KUNENA_AVATAR_QUALITY_DESC') ?></td>
 											</tr>
 											<tr>
 												<td><?php echo JText::_('COM_KUNENA_AVATAR_RESIZE_METHOD') ?></td>
 												<td><?php echo $this->lists ['avatarresizemethod'] ?></td>
-												<td></td>
+												<td><?php echo JText::_('COM_KUNENA_AVATAR_RESIZE_METHOD_DESC') ?></td>
 											</tr>
 											<tr>
 												<td><?php echo JText::_('COM_KUNENA_AVATAR_CROP') ?></td>
 												<td><?php echo $this->lists ['avatarcrop'] ?></td>
-												<td></td>
+												<td><?php echo JText::_('COM_KUNENA_AVATAR_CROP_DESC') ?></td>
 											</tr>
 											</tbody>
 										</table>
@@ -1373,4 +1410,3 @@ JHtml::_('behavior.tabstate');
 		<?php echo KunenaVersion::getLongVersionHTML(); ?>
 	</div>
 </div>
-

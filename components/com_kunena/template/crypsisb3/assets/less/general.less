@@ -2,8 +2,8 @@
 * Kunena Component
 * @package Kunena.Template.Crypsis
 *
-* @copyright (C) 2008 - 2016 Kunena Team. All rights reserved.
-* @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+* @copyright (C) 2008 - 2017 Kunena Team. All rights reserved.
+* @license https://www.gnu.org/copyleft/gpl.html GNU/GPL
 * @link https://www.kunena.org
 **/
 
@@ -78,7 +78,7 @@ h3 {
 	}
 }
 
-.knewchar {
+sup.knewchar {
 	padding-left : 3px;
 }
 
@@ -295,12 +295,6 @@ a:focus,
 	padding-left : 10px;
 }
 
-.horizontal-message-bottom .kmsg {
-	margin-top   : 50px;
-	min-height   : 140px;
-	padding-left : 10px;
-}
-
 .horizontal-message .kmessage {
 	padding : 10px;
 }
@@ -401,7 +395,7 @@ form {
 	height    : 100%;
 	margin    : 20px 0;
 	word-wrap : break-word;
-	font-family: "Segoe UI", "Segoe UI Emoji", "Segoe UI Symbol";
+	font-family: "Segoe UI", "Segoe UI Emoji", "Segoe UI Symbol", Helvetica , Arial, sans-serif;
 }
 
 .input-xxlarge {
@@ -814,7 +808,8 @@ ul.inline span.kicon {
 	margin-bottom : -7px;
 }
 
-ul.inline i {
+ul.list-inline .glyphicon,
+ul.list-inline i {
 	padding-top   : 2px;
 	padding-right : 5px;
 }
@@ -1169,28 +1164,28 @@ div.moderators {
 	margin-top: 0 !important;
 	-webkit-box-shadow: 0 0 0 2px green, 0 0 0 4px #ccc, 0 2px 5px 4px rgba(0, 0, 0, 0.1);
 	-moz-box-shadow: 0 0 0 2px green, 0 0 0 4px #ccc, 0 2px 5px 4px rgba(0, 0, 0, 0.1);
-	box-shadow: 0px 0px 0px 2px green, 0px 0px 0px 4px #ccc, 0px 2px 5px 4px rgba(0,0,0,0.1);
+	box-shadow: 0 0 0 2px green, 0 0 0 4px #ccc, 0 2px 5px 4px rgba(0,0,0,0.1);
 }
 
 .dropdown-toggle img.yellow {
 	margin-top: 0 !important;
 	-webkit-box-shadow: 0 0 0 2px yellow, 0 0 0 4px #ccc, 0 2px 5px 4px rgba(0, 0, 0, 0.1);
 	-moz-box-shadow: 0 0 0 2px yellow, 0 0 0 4px #ccc, 0 2px 5px 4px rgba(0, 0, 0, 0.1);
-	box-shadow: 0px 0px 0px 2px yellow, 0px 0px 0px 4px #ccc, 0px 2px 5px 4px rgba(0,0,0,0.1);
+	box-shadow: 0 0 0 2px yellow, 0 0 0 4px #ccc, 0 2px 5px 4px rgba(0,0,0,0.1);
 }
 
 .dropdown-toggle img.red {
 	margin-top: 0 !important;
 	-webkit-box-shadow: 0 0 0 2px red, 0 0 0 4px #ccc, 0 2px 5px 4px rgba(0, 0, 0, 0.1);
 	-moz-box-shadow: 0 0 0 2px red, 0 0 0 4px #ccc, 0 2px 5px 4px rgba(0, 0, 0, 0.1);
-	box-shadow: 0px 0px 0px 2px red, 0px 0px 0px 4px #ccc, 0px 2px 5px 4px rgba(0,0,0,0.1);
+	box-shadow: 0 0 0 2px red, 0 0 0 4px #ccc, 0 2px 5px 4px rgba(0,0,0,0.1);
 }
 
 .dropdown-toggle img.grey {
 	margin-top: 0 !important;
 	-webkit-box-shadow: 0 0 0 2px grey, 0 0 0 4px #ccc, 0 2px 5px 4px rgba(0, 0, 0, 0.1);
 	-moz-box-shadow: 0 0 0 2px grey, 0 0 0 4px #ccc, 0 2px 5px 4px rgba(0, 0, 0, 0.1);
-	box-shadow: 0px 0px 0px 2px grey, 0px 0px 0px 4px #ccc, 0px 2px 5px 4px rgba(0,0,0,0.1);
+	box-shadow: 0 0 0 2px grey, 0 0 0 4px #ccc, 0 2px 5px 4px rgba(0,0,0,0.1);
 }
 
 .dropdown-toggle img.none {
@@ -1251,4 +1246,21 @@ div.moderators {
 #ann-date2 .date,
 #ann-date3 .date {
 	display: inline-block !important;
+}
+
+.inputbox#catid {
+	max-width: 250px;
+}
+
+#whoisonlinelist .img-circle {
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+
+.search-query {
+	width: auto;
+}
+
+#nav-menu img {
+	width: 80%;
 }

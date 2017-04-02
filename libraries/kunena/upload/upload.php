@@ -4,8 +4,8 @@
  * @package     Kunena.Framework
  * @subpackage  Upload
  *
- * @copyright   (C) 2008 - 2016 Kunena Team. All rights reserved.
- * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @copyright   (C) 2008 - 2017 Kunena Team. All rights reserved.
+ * @license     https://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link        https://www.kunena.org
  **/
 defined('_JEXEC') or die;
@@ -85,13 +85,13 @@ class KunenaUpload
 		// Check if file extension matches any allowed extensions (case insensitive)
 		foreach ($this->validExtensions as $ext)
 		{
-			$extension = JString::substr($filename, -JString::strlen($ext));
+			$extension = Joomla\String\StringHelper::substr($filename, -Joomla\String\StringHelper::strlen($ext));
 
-			if (JString::strtolower($extension) == JString::strtolower($ext))
+			if (Joomla\String\StringHelper::strtolower($extension) == Joomla\String\StringHelper::strtolower($ext))
 			{
 				// File must contain one letter before extension
-				$name = JString::substr($filename, 0, -JString::strlen($ext));
-				$extension = JString::substr($extension, 1);
+				$name = Joomla\String\StringHelper::substr($filename, 0, -Joomla\String\StringHelper::strlen($ext));
+				$extension = Joomla\String\StringHelper::substr($extension, 1);
 
 				if (!$name)
 				{
@@ -329,10 +329,15 @@ class KunenaUpload
 
 				$size += $bytes;
 
-				$image = stripos($type, 'image/');
-				$files = stripos($type, 'application/');
+				if (stripos($type, 'image/') === false && stripos($type, 'image/') <= 0)
+				{
+					if (!$this->checkFileSizeFileAttachment($size))
+					{
+						throw new RuntimeException(JText::_('COM_KUNENA_UPLOAD_ERROR_FILE_EXCEED_LIMIT_IN_CONFIGURATION'), 500);
+					}
+				}
 
-				if ($image)
+				if (stripos($type, 'image/') !== false && stripos($type, 'image/') >= 0)
 				{
 					if (!$this->checkFileSizeImageAttachment($size))
 					{
@@ -340,13 +345,10 @@ class KunenaUpload
 					}
 				}
 
-				if ($files)
-				{
-					if (!$this->checkFileSizeFileAttachment($size))
-					{
-						throw new RuntimeException(JText::_('COM_KUNENA_UPLOAD_ERROR_FILE_EXCEED_LIMIT_IN_CONFIGURATION'), 500);
-					}
-				}
+				// Get filename from stream
+				$meta_data = stream_get_meta_data($out);
+				$filename  = $meta_data['uri'];
+				KunenaImage::correctImageOrientation($filename);
 			}
 		}
 		catch (Exception $exception)
@@ -479,7 +481,7 @@ class KunenaUpload
 	 */
 	protected function checkFileSizeAvatar($filesize)
 	{
-		if ($filesize > intval(KunenaConfig::getInstance()->avatarsize) * 1024)
+		if ($filesize > intval(KunenaConfig::getInstance()->avatarsize * 1024))
 		{
 			return false;
 		}
@@ -559,16 +561,43 @@ class KunenaUpload
 	{
 		$file = new stdClass;
 		$file->ext = JFile::getExt($fileInput['name']);
+		$file->ext = strtolower($file->ext);
 		$file->size = $fileInput['size'];
-		$file->tmp_name = $fileInput['tmp_name'];
+		$config = KunenaFactory::getConfig();
+
+		if ($type != 'attachment' && $config->attachment_utf8)
+		{
+			$file->tmp_name = $fileInput['tmp_name'];
+		}
+		else
+		{
+			$pathInfo = pathinfo($fileInput['tmp_name']);
+			$file->tmp_name = $pathInfo['dirname'] . '/' . JFile::makeSafe($pathInfo['basename']);
+		}
+
 		$file->error = $fileInput['error'];
 		$file->destination = $destination . '.' . $file->ext;
 		$file->success = false;
 		$file->isAvatar = false;
 
-		if ($type != 'attachment')
+		if ($type == 'avatar')
 		{
 			$file->isAvatar = true;
+		}
+
+		if ($file->isAvatar)
+		{
+			if (!$this->checkFileSizeAvatar($file->size))
+			{
+				throw new RuntimeException(JText::_('COM_KUNENA_UPLOAD_ERROR_AVATAR_EXCEED_LIMIT_IN_CONFIGURATION'), 500);
+			}
+
+			$a = array('gif', 'jpeg', 'jpg', 'png');
+
+			if (!in_array($file->ext, $a, true))
+			{
+				throw new RuntimeException(JText::sprintf('COM_KUNENA_UPLOAD_ERROR_EXTENSION_FILE', implode(', ', $a)), 500);
+			}
 		}
 
 		if (!is_uploaded_file($file->tmp_name))
@@ -588,13 +617,13 @@ class KunenaUpload
 		// Check if file extension matches any allowed extensions (case insensitive)
 		foreach ($this->validExtensions as $ext)
 		{
-			$extension = JString::substr($file->tmp_name, -JString::strlen($ext));
+			$extension = Joomla\String\StringHelper::substr($file->tmp_name, -Joomla\String\StringHelper::strlen($ext));
 
-			if (JString::strtolower($extension) == JString::strtolower($ext))
+			if (Joomla\String\StringHelper::strtolower($extension) == Joomla\String\StringHelper::strtolower($ext))
 			{
 				// File must contain one letter before extension
-				$name = JString::substr($file->tmp_name, 0, -JString::strlen($ext));
-				$extension = JString::substr($extension, 1);
+				$name = Joomla\String\StringHelper::substr($file->tmp_name, 0, -Joomla\String\StringHelper::strlen($ext));
+				$extension = Joomla\String\StringHelper::substr($extension, 1);
 
 				if (!$name)
 				{
@@ -616,18 +645,7 @@ class KunenaUpload
 				$type = $info['mime'];
 			}
 
-			if ($file->isAvatar)
-			{
-				if (!$this->checkFileSizeAvatar($file->size))
-				{
-					throw new RuntimeException(JText::_('COM_KUNENA_UPLOAD_ERROR_AVATAR_EXCEED_LIMIT_IN_CONFIGURATION'), 500);
-				}
-			}
-
-			$image = stripos($type, 'image/');
-			$files = stripos($type, 'application/');
-
-			if (!$file->isAvatar && $image)
+			if (!$file->isAvatar && stripos($type, 'image/') !== false)
 			{
 				if (!$this->checkFileSizeImageAttachment($file->size))
 				{
@@ -635,7 +653,7 @@ class KunenaUpload
 				}
 			}
 
-			if (!$file->isAvatar && $files)
+			if (!$file->isAvatar && stripos($type, 'image/') !== true)
 			{
 				if (!$this->checkFileSizeFileAttachment($file->size))
 				{
@@ -644,6 +662,7 @@ class KunenaUpload
 			}
 		}
 
+		KunenaImage::correctImageOrientation($file->tmp_name);
 
 		if (!KunenaFile::copy($file->tmp_name, $file->destination))
 		{

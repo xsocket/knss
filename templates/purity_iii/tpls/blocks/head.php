@@ -51,6 +51,7 @@ if (is_file(T3_TEMPLATE_PATH . '/css/custom.css')) {
 }
 ?>
 
+<script src="//cdn.bootcss.com/bootstrap-hover-dropdown/2.2.1/bootstrap-hover-dropdown.js"></script>
 <!-- Le HTML5 shim and media query for IE8 support -->
 <!--[if lt IE 9]>
 <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>

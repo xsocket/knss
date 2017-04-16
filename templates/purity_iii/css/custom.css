@@ -1,0 +1,14 @@
+/* --- BEGIN K2 CUSTOM --- */
+div.k2Pagination ul li.active a { background-color: #0077bb; }
+div.catItemView { padding: 5px 0; margin:0; border-bottom: 1px dashed #aaa;}
+div.catItemHeader a { text-decoration: none; }
+div.catItemHeader .catItemDateCreated { float:right; }
+div.catItemHeader .catItemCategory { float:left; margin-right: .5em; }
+div.catItemHeader .catItemCategory a {color: #333; }
+
+div.media-desc p {margin:0;}
+
+div.itemToolbar {background-color: #FFFFF0; border-top: 1px dotted #CCC; border-bottom: 1px dotted #CCC;}
+div.itemToolbar .itemDateCreated { float:left; }
+
+/* --- END K2 CUSTOM --- */

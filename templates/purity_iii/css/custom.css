@@ -12,3 +12,52 @@ div.itemToolbar {background-color: #FFFFF0; border-top: 1px dotted #CCC; border-
 div.itemToolbar .itemDateCreated { float:left; }
 
 /* --- END K2 CUSTOM --- */
+
+
+/* --- BEGIN Sidebar Menu --- */
+div.wrap.t3-sl.t3-sl-1 { padding: 10px 0; }
+div.module-sidemenu {    
+  margin: 0;
+  background-color: #ffffff;
+  border: 1px solid #0077bb;
+  border-radius: 0;
+  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+  box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+}
+
+div.module-sidemenu .module-title {
+  color: #ffffff;
+  background-color: #0077bb;
+  border-color: #0077bb;
+  padding: 10px 15px;
+  margin-bottom:0;
+}
+div.module-sidemenu ul.dropdown-menu {
+  top: 0;
+  left: 100%;
+}
+
+.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+  color: #0077bb;
+}
+
+div.module-sidemenu ul.sidemenu li {
+  border-top : 1px dotted #CCC;
+}
+div.module-sidemenu .nav-stacked > li + li {
+  margin-top: 0px;
+}
+
+/* --- END Sidebar Menu --- */
+
+div.k2LatestCommentsBlock ul li, div.k2TopCommentersBlock ul li, div.k2ItemsBlock ul li, div.k2LoginBlock ul li, div.k2UserBlock ul.k2UserBlockActions li, div.k2UserBlock ul.k2UserBlockRenderedMenu li, div.k2ArchivesBlock ul li, div.k2AuthorsListBlock ul li, div.k2CategoriesListBlock ul li, div.k2UsersBlock ul li {
+  margin: 5px 0;
+}
+
+/* --- BEGIN Index --- */
+div.row-feature {padding: 10px 0;}
+div.row-feature .jumbotron {margin-bottom:5px;}
+div.row-feature .jumbotron p {margin-bottom:0px;}
+/* --- END Index --- */
+
+

@@ -224,10 +224,10 @@ if ($this->params->get('linkColor'))
 								<li class="divider"></li>
 								<li>
 									<a href="index.php?option=com_admin&amp;task=profile.edit&amp;id=<?php echo $user->id; ?>"><?php echo JText::_('TPL_ISIS_EDIT_ACCOUNT'); ?></a>
-								</li>
+								</li>sex
 								<li class="divider"></li>
+                                                                       <a href="<?php echo JRoute::_('index.php?option=com_login&task=logout&' . JSession::getFormToken() . '=1'); ?>"><?php echo JText::_('TPL_ISIS_LOGOUT'); ?></a>
 								<li class="">
-									<a href="<?php echo JRoute::_('index.php?option=com_login&task=logout&' . JSession::getFormToken() . '=1'); ?>"><?php echo JText::_('TPL_ISIS_LOGOUT'); ?></a>
 								</li>
 							<?php endif; ?>
 						</ul>

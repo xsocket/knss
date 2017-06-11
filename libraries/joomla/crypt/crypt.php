@@ -45,7 +45,6 @@ class JCrypt
 		// Set the encryption cipher.
 		$this->_cipher = isset($cipher) ? $cipher : new JCryptCipherSimple;
 	}
-
 	/**
 	 * Method to decrypt a data string.
 	 *
@@ -123,7 +122,9 @@ class JCrypt
 	 */
 	public static function genRandomBytes($length = 16)
 	{
-		return random_bytes($length);
+		/*return random_bytes($length);*/
+
+                return mcrypt_create_iv($length, MCRYPT_DEV_URANDOM);
 	}
 
 	/**

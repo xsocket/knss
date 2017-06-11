@@ -36,6 +36,9 @@ div.module-sidemenu ul.dropdown-menu {
   top: 0;
   left: 100%;
 }
+div.module-sidemenu ul.dropdown-menu a {
+  color: #eee;
+}
 
 .nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
   color: #0077bb;
@@ -60,4 +63,9 @@ div.row-feature .jumbotron {margin-bottom:5px;}
 div.row-feature .jumbotron p {margin-bottom:0px;}
 /* --- END Index --- */
 
+/* --- BEGIN Slide ---*/
+div.jsn-themeslider-gallery{height:326px !important}
+div.jsn-themeslider-gallery img{height:326px !important}
+div.jsn-themeslider-gallery div.container_skitter{height:326px !important}
+/* --- END Slide ---*/
 

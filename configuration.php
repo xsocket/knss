@@ -4,7 +4,7 @@ class JConfig {
 	public $offline_message = '网站在维护中。<br /> 请稍候访问。';
 	public $display_offline_message = '1';
 	public $offline_image = '';
-	public $sitename = '凯诺赛斯';
+	public $sitename = '北京凯诺赛斯生物科技有限公司';
 	public $editor = 'jce';
 	public $captcha = '0';
 	public $list_limit = '20';
@@ -86,7 +86,7 @@ class JConfig {
 	public $session_memcache_server_port = '11211';
 	public $session_memcached_server_host = 'localhost';
 	public $session_memcached_server_port = '11211';
-	public $frontediting = '1';
+	public $frontediting = '2';
 	public $cookie_domain = '';
 	public $cookie_path = '';
 	public $asset_id = '1';

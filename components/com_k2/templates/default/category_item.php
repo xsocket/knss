@@ -169,9 +169,8 @@ K2HelperUtilities::setDefaultImage($this->item, 'itemlist', $this->params);
   $this->item->params->get('catItemAttachments')
   ): ?>
   <div class="catItemLinks">
-
+<!--
 		<?php if($this->item->params->get('catItemHits')): ?>
-		<!-- Item Hits -->
 		<div class="catItemHitsBlock">
 			<span class="catItemHits">
 				<?php echo JText::_('K2_READ'); ?> <b><?php echo $this->item->hits; ?></b> <?php echo JText::_('K2_TIMES'); ?>
@@ -180,13 +179,12 @@ K2HelperUtilities::setDefaultImage($this->item, 'itemlist', $this->params);
 		<?php endif; ?>
 
 		<?php if($this->item->params->get('catItemCategory')): ?>
-		<!-- Item category name -->
 		<div class="catItemCategory">
 			<span><?php echo JText::_('K2_PUBLISHED_IN'); ?></span>
 			<a href="<?php echo $this->item->category->link; ?>"><?php echo $this->item->category->name; ?></a>
 		</div>
 		<?php endif; ?>
-
+-->
 	  <?php if($this->item->params->get('catItemTags') && count($this->item->tags)): ?>
 	  <!-- Item tags -->
 	  <div class="catItemTagsBlock">

@@ -266,19 +266,17 @@ defined('_JEXEC') or die;
 			<div class="clr"></div>
 		</div>
 		<?php endif; ?>
-
+<!--
 		<?php if($this->item->params->get('itemHits') || ($this->item->params->get('itemDateModified') && intval($this->item->modified)!=0)): ?>
 		<div class="itemContentFooter">
 
 			<?php if($this->item->params->get('itemHits')): ?>
-			<!-- Item Hits -->
 			<span class="itemHits">
 				<?php echo JText::_('K2_READ'); ?> <b><?php echo $this->item->hits; ?></b> <?php echo JText::_('K2_TIMES'); ?>
 			</span>
 			<?php endif; ?>
 
 			<?php if($this->item->params->get('itemDateModified') && intval($this->item->modified)!=0): ?>
-			<!-- Item date modified -->
 			<span class="itemDateModified">
 				<?php echo JText::_('K2_LAST_MODIFIED_ON'); ?> <?php echo JHTML::_('date', $this->item->modified, JText::_('K2_DATE_FORMAT_LC2')); ?>
 			</span>
@@ -287,7 +285,7 @@ defined('_JEXEC') or die;
 			<div class="clr"></div>
 		</div>
 		<?php endif; ?>
-
+-->
 		<!-- Plugins: AfterDisplayContent -->
 		<?php echo $this->item->event->AfterDisplayContent; ?>
 
